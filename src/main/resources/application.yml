@@ -1,0 +1,96 @@
+server:
+  servlet:
+    context-path: /api
+  port: 16000
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/octet-stream,image/jpeg,image/jpg,image/png
+    min-response-size: 1024
+  http2:
+    enabled: true
+
+spring:
+  ## Mysql Connection
+  datasource:
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 3000
+      maxLifetime: 1800000
+      maximumPoolSize: 50
+    jdbc-url: jdbc:mysql://localhost:3306/dcrm?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL55Dialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+  sql:
+    init:
+      mode: always
+  servlet:
+    #Multipart config
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+  #Mail properties
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: admin@minemagma.com
+    password: M@gm@#2021
+    contactmail: contact@minemagma.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 15000
+          writetimeout: 15000
+          debug: true
+          # TLS , port 587
+          starttls:
+            enable: true
+            #SSL, port 465
+            #socketFactory:
+            #port: 465
+            #class: javax.net.ssl.SSLSocketFactory
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: INFO
+        #type:
+        #  descriptor:
+        #    sql:
+        #      BasicBinder: TRACE
+
+#JWT configuration
+jwt:
+  secret: secret
+  #actual token which is passed to authenticated service
+  token:
+    ttl: 600000
+  #refresh token which is passed to renew token when expired. The value will be always higher than actual token ttl and refers to the
+  #idle time + actual token ttl
+  refresh:
+    token:
+      ttl: 1200000
+## File Storage Properties
+file:
+  upload-dir: /root/javacrm/dcrm_files/
+
+# Token expiry time in ms
+token:
+  expiry:
+    timeout: 86400000

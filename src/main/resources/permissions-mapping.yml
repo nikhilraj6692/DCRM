@@ -1,0 +1,8 @@
+api:
+  metaData:
+    "[/SMPMasterAction/login]":
+      method: POST
+      capabilityId: User.SignIn_WRITE
+    "[/SMPMasterAction/getBookList]":
+      method: GET
+      capabilityId: User.BookList_READ

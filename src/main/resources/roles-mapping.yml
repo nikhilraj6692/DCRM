@@ -1,0 +1,15 @@
+user:
+  roleToCapabilities:
+    - roleName: SuperAdmin
+      allowedCapabilities:
+        - User.SignIn_WRITE
+        - User.BookList_READ
+    - roleName: Management
+      allowedCapabilities:
+        - User.SignIn_WRITE
+    - roleName: Reviewer
+      allowedCapabilities:
+        - User.SignIn_WRITE
+    - roleName: Lead Reviewer
+      allowedCapabilities:
+        - User.SignIn_WRITE

@@ -1,0 +1,1466 @@
+openapi: 3.0.1
+info:
+  title: Digimine
+  description: This is a swagger spec for Digimine - SuperAdmin role
+  contact:
+    email: rajputnikhil433@gmail.com
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: /api
+tags:
+  - name: Login
+  - name: Location
+  - name: Question & Answer
+  - name: Question & Option
+  - name: Company
+  - name: Admin
+paths:
+  /signIn:
+    post:
+      tags:
+        - Login
+      summary: Generates token for resource signing in
+      description: Generates jwt token for user signing in
+      operationId: signIn
+      requestBody:
+        description: Channel details required to validate otp
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      x-codegen-request-body-name: loginRequest
+  /silent-renewal:
+    post:
+      tags:
+        - Login
+      summary: Generates new token from refresh token
+      description: Generates new token from refresh token
+      operationId: silentRenewal
+      requestBody:
+        description: Refresh token required to generate new token
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      x-codegen-request-body-name: tokenRequest
+  /userLogout:
+    get:
+      tags:
+        - Login
+      summary: Destroys token associated with a user
+      description: API used to destroy token associated with a user
+      operationId: signOut
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/user/saveOrUpdateLocation:
+    put:
+      tags:
+        - Location
+      summary: Save or update location
+      description: Save or update all possible locations
+      operationId: saveOrUpdateLocation
+      requestBody:
+        description: Location Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LocationRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationUpdationResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: locationRequest
+  /superadmin/user/deleteLocation/{id}:
+    delete:
+      tags:
+        - Location
+      summary: Delete location
+      description: Delete location by location id
+      operationId: deleteLocation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/user/getLocations:
+    get:
+      tags:
+        - Location
+      summary: Fetches all locations
+      description: Fetches all locations
+      operationId: getAllLocations
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/company/saveOrUpdate:
+    put:
+      tags:
+        - Company
+      summary: Creates/updates a company
+      description: Creates/updates a company
+      operationId: saveorUpdateCompany
+      requestBody:
+        description: Company details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyUpdateDeleteResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: companyRequest
+  /superadmin/company/v1/saveOrUpdate:
+    put:
+      tags:
+        - Company
+      summary: Creates/updates a company with multipart
+      description: Creates/updates a company with multipart
+      operationId: saveorUpdateCompanyWithMultipart
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                company:
+                  $ref: '#/components/schemas/CompanyRequest'
+                file:
+                  type: string
+                  format: binary
+        required: true
+
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyUpdateDeleteResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: companyRequest
+  /superadmin/company/delete/{id}:
+    delete:
+      tags:
+        - Company
+      summary: Deletes a company
+      description: Deletes a company
+      operationId: deleteCompany
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyUpdateDeleteResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/department/saveOrUpdate:
+    put:
+      tags:
+        - Department
+      summary: Creates/updates a department
+      description: Creates/updates a department
+      operationId: saveorUpdateDepartment
+      requestBody:
+        description: Department details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartmentRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: departmentRequest
+  /superadmin/department/{id}:
+    delete:
+      tags:
+        - Department
+      summary: Deletes a department
+      description: Deletes a department
+      operationId: deleteDepartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/rule/saveOrUpdate:
+    put:
+      tags:
+        - Category
+      summary: Creates/updates a rule
+      description: Creates/updates a rule
+      operationId: saveorUpdateRule
+      requestBody:
+        description: Rule details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RuleRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: ruleRequest
+  /superadmin/rule/delete/{id}:
+    delete:
+      tags:
+        - Category
+      summary: Deletes a rule
+      description: Deletes a rule
+      operationId: deleteRule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/subRule/saveOrUpdate:
+    put:
+      tags:
+        - SubRule
+      summary: Creates/updates a subrule
+      description: Creates/updates a subrule
+      operationId: saveorUpdateSubrule
+      requestBody:
+        description: Subule details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubruleRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: subRuleRequest
+  /superadmin/subRule/v1/saveOrUpdate:
+    put:
+      tags:
+        - SubRule
+      summary: Creates/updates a subrule
+      description: Creates/updates a subrule
+      operationId: saveorUpdateSubruleMultipart
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                subRule:
+                  $ref: '#/components/schemas/SubruleRequest'
+                file:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: subRuleRequest
+  /superadmin/subRule/delete/{id}/{ruleId}:
+    delete:
+      tags:
+        - SubRule
+      summary: Deletes a subrule
+      description: Deletes a subrule
+      operationId: deleteSubrule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: ruleId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/company/list:
+    get:
+      tags:
+        - Company
+      summary: Lists companies
+      description: Lists all companies
+      operationId: listCompany
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyListResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/user/saveOrUpdate:
+    put:
+      tags:
+        - Admin
+      summary: Creates/updates an admin
+      description: Creates/updates an admin
+      operationId: saveorUpdateAdmin
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/AdminUserRequest'
+                file:
+                  type: string
+                  format: binary
+        required: true
+
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminCreationResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: adminUserRequest
+  /superadmin/user/list:
+    get:
+      tags:
+        - Admin
+      summary: Lists admins
+      description: Lists all admins
+      operationId: listAdmin
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminListResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/user/{userId}:
+    delete:
+      tags:
+        - Admin
+      summary: Deletes an admin
+      description: Deletes an admin
+      operationId: deleteAdmin
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAdminResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/question-answer/saveQandO:
+    post:
+      tags:
+        - Question & Option
+      summary: Saves feedback question
+      description: Saves feedback question and corresponding options
+      operationId: saveFeedbackQuestion
+      requestBody:
+        description: Questions and options details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QnORequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QnOAResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: qnORequest
+  /superadmin/question-answer/updateQandO/{questionId}:
+    put:
+      tags:
+        - Question & Option
+      summary: Update feedback question
+      description: Update feedback question and corresponding options
+      operationId: updateFeedbackQuestion
+      parameters:
+        - name: questionId
+          in: path
+          description: question id to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Questions and options details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QnORequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QnOAResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: qnORequest
+  /superadmin/question-answer/deleteQandO/{questionId}:
+    delete:
+      tags:
+        - Question & Option
+      summary: Deletes feedback questions
+      description: Deletes feedback question and corresponding options
+      operationId: deleteFeedbackQuestion
+      parameters:
+        - name: questionId
+          in: path
+          description: question id to be deleted
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QnOAResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /superadmin/question-answer/saveQandA:
+    post:
+      tags:
+        - Question & Answer
+      summary: Saves help question
+      description: Saves help question and corresponding answer
+      operationId: saveHelpQuestion
+      requestBody:
+        description: Questions and answer detail
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QnARequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QnOAResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: qnARequest
+  /superadmin/question-answer/updateQandA/{questionId}:
+    put:
+      tags:
+        - Question & Answer
+      summary: Update help question
+      description: Update help question and corresponding answer
+      operationId: updateHelpQuestion
+      parameters:
+        - name: questionId
+          in: path
+          description: question id to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Questions and answer details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QnARequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QnOAResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: qnARequest
+  /superadmin/question-answer/deleteQandA/{questionId}:
+    delete:
+      tags:
+        - Question & Answer
+      summary: Deletes help question
+      description: Delete help question and corresponding answer
+      operationId: deleteHelpQuestion
+      parameters:
+        - name: questionId
+          in: path
+          description: question id to be deleted
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QnOAResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+components:
+  schemas:
+    UserBasicDetails:
+      type: object
+      properties:
+        emailId:
+          type: string
+        userName:
+          type: string
+        userId:
+          type: number
+    LoginRequest:
+      required:
+        - emailId
+      type: object
+      properties:
+        emailId:
+          type: string
+        password:
+          type: string
+          description: parameter to consume password for authentication. the field
+            would be password in case of SUPER_ADMIN and otp in case of other roles
+        deviceType:
+          type: string
+          description: parameter to consume deviceType
+        deviceToken:
+          type: string
+          description: parameter to consume deviceToken
+    LoginResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TokenData'
+        status:
+          $ref: '#/components/schemas/Status'
+    TokenRequest:
+      required:
+        - refreshToken
+      type: object
+      properties:
+        refreshToken:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TokenResponseData'
+        status:
+          $ref: '#/components/schemas/Status'
+    TokenResponseData:
+      type: object
+      properties:
+        token:
+          type: string
+        refreshToken:
+          type: string
+    QnOAResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/QnOAData'
+        status:
+          $ref: '#/components/schemas/Status'
+    QnOAData:
+      type: object
+      properties:
+        id:
+          type: number
+    QnORequest:
+      type: object
+      properties:
+        question:
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionRequest'
+    QnARequest:
+      type: object
+      properties:
+        question:
+          type: string
+        answer:
+          type: string
+    OptionRequest:
+      type: array
+      items:
+        type: object
+        properties:
+          description:
+            type: string
+          id:
+            type: number
+            description: Mandatory in case question is edited
+    LocationRequest:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case location is edited
+        name:
+          type: string
+    CompanyRequest:
+      required:
+        - companyAddress
+        - companyName
+        - locations
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case location is edited
+        companyName:
+          type: string
+        companyAddress:
+          type: string
+        locations:
+          type: array
+          items:
+            type: string
+        companyLogoPath:
+          type: string
+    DepartmentRequest:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case department is edited
+        name:
+          type: string
+        deleted:
+          type: boolean
+          description: Mandatory in case department is edited
+    RuleRequest:
+      required:
+        - name
+        - departmentId
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case rule is edited
+        name:
+          type: string
+        deleted:
+          type: boolean
+          description: May be sent in case rule is edited
+          default: false
+        departmentId:
+          type: number
+    SubruleRequest:
+      required:
+        - name
+        - ruleId
+        - title
+        - responsibility
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case subrule is edited
+        name:
+          type: string
+        deleted:
+          type: boolean
+          description: May be sent in case subrule is edited
+          default: false
+        ruleId:
+          type: number
+        title:
+          type: string
+        responsibility:
+          type: string
+        description:
+          type: string
+    LocationUpdationResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/LocationUpdationData'
+        status:
+          $ref: '#/components/schemas/Status'
+    LocationUpdationData:
+      type: object
+      properties:
+        locationId:
+          type: number
+    CommonResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        status:
+          $ref: '#/components/schemas/Status'
+    CommonData:
+      type: object
+      properties:
+        id:
+          type: number
+    TokenData:
+      type: object
+      properties:
+        id:
+          type: number
+        emailId:
+          type: string
+        roleName:
+          type: string
+        active:
+          type: boolean
+        name:
+          type: string
+        awtToken:
+          type: string
+        agentName:
+          type: string
+        companyName:
+          type: string
+        ownerName:
+          type: string
+        feedbackCompleted:
+          type: boolean
+          default: false
+    LocationResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/LocationList'
+        status:
+          $ref: '#/components/schemas/Status'
+    LocationList:
+      type: object
+      properties:
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationDetails'
+    LocationDetails:
+      type: object
+      properties:
+        id:
+          type: number
+        locationName:
+          type: string
+    LocationData:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    AdminUserRequest:
+      required:
+        - agentName
+        - companyId
+        - emailId
+        - employeeId
+        - mobileNumber
+        - name
+        - ownerName
+        - projectId
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory when editing an admin
+        emailId:
+          type: string
+        mobileNumber:
+          type: string
+        ownerName:
+          type: string
+        agentName:
+          type: string
+        companyId:
+          type: number
+        projectId:
+          type: string
+        lowRisk:
+          type: integer
+        highRisk:
+          type: integer
+        employeeId:
+          type: string
+        name:
+          type: string
+        departmentId:
+          type: number
+        active:
+          type: boolean
+          description: Mandatory when editing an admin
+          default: true
+        deleted:
+          type: boolean
+          description: Mandatory when editing an admin
+          default: false
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/Status'
+    AdminCreationResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserBasicDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    AdminListResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserList'
+        status:
+          $ref: '#/components/schemas/Status'
+    UserList:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDetails'
+    DeleteAdminResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserBasicDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    CompanyUpdateDeleteResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CompanyUpdationDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    CompanyUpdationDetails:
+      type: object
+      properties:
+        id:
+          type: number
+    CompanyListResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CompanyListDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    CompanyListDetails:
+      type: object
+      properties:
+        companies:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyResponse'
+    CompanyResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case location is edited
+        companyName:
+          type: string
+        companyAddress:
+          type: string
+        adminLocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationData'
+        companyLogoPath:
+          type: string
+    UserDetails:
+      type: object
+      properties:
+        id:
+          type: number
+        emailId:
+          type: string
+        roleId:
+          type: number
+        roleName:
+          type: number
+        mobileNumber:
+          type: string
+        ownerName:
+          type: string
+        agentName:
+          type: string
+        companyName:
+          type: string
+        companyId:
+          type: string
+        projectId:
+          type: string
+        employeeId:
+          type: string
+        name:
+          type: string
+        departmentId:
+          type: number
+        active:
+          type: boolean
+        deleted:
+          type: boolean
+        feedbackCompleted:
+          type: boolean
+    Status:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header

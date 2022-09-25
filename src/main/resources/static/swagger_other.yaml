@@ -1,0 +1,2731 @@
+openapi: 3.0.1
+info:
+  title: Digimine
+  description: This is a swagger spec for Digimine - Other Roles
+  contact:
+    email: rajputnikhil433@gmail.com
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: /api
+tags:
+  - name: Login
+  - name: Location
+  - name: Question & Answer
+  - name: Question & Option
+  - name: Company
+  - name: User
+  - name: Feedback
+  - name: Role
+  - name: Department
+  - name: QueryForm
+paths:
+  /validateEmail:
+    get:
+      tags:
+        - Login
+      summary: Validate email at login screen
+      description: API used to validate if an email is present in database
+      operationId: validateEmail
+      parameters:
+        - name: emailId
+          in: query
+          description: parameter to consume email
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidateResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+  /generateOtpByEmailId:
+    get:
+      tags:
+        - Login
+      summary: Generate otp for resource in login context
+      description: API used to generate a secured OTP of 6 digits. The number of digits
+        is configurable
+      operationId: generateOTP
+      parameters:
+        - name: emailId
+          in: query
+          description: parameter to consume email
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OTPResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+  /validateOtp:
+    post:
+      tags:
+        - Login
+      summary: Validate otp for resource in login context
+      description: API used to validate a secured OTP against database
+      operationId: validateOTP
+      requestBody:
+        description: Channel details required to validate otp
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelDetails'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OTPValidation'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      x-codegen-request-body-name: channelDetails
+  /signIn:
+    post:
+      tags:
+        - Login
+      summary: Generates token for resource signing in
+      description: Generates jwt token for user signing in
+      operationId: signIn
+      requestBody:
+        description: Channel details required to validate otp
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      x-codegen-request-body-name: loginRequest
+  /silent-renewal:
+    post:
+      tags:
+        - Login
+      summary: Generates new token from refresh token
+      description: Generates new token from refresh token
+      operationId: silentRenewal
+      requestBody:
+        description: Refresh token required to generate new token
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      x-codegen-request-body-name: tokenRequest
+  /userLogout:
+    get:
+      tags:
+        - Login
+      summary: Destroys token associated with a user
+      description: API used to destroy token associated with a user
+      operationId: signOut
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /download:
+    get:
+      tags:
+        - Login
+      summary: Downloads profile image
+      description: Downloads profile image
+      operationId: downloadImage
+      parameters:
+        - name: userId
+          in: query
+          description: parameter to consume userId, if user context userid is different from userId requested
+          required: false
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /getLocations:
+    get:
+      tags:
+        - Location
+      summary: Get company branches
+      description: Get company branches against the company in which user in context
+        is registered
+      operationId: getLocations
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocationResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /getMenu:
+    get:
+      tags:
+        - Menu
+      summary: Get menu
+      description: Get menu as per user type
+      operationId: getMenu
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /getallQuestions:
+    get:
+      tags:
+        - Question & Option
+      summary: Get all questions and corresponding options
+      description: Get all questions and corresponding options to be shown in feedback
+        form
+      operationId: getAllQuestions
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QnOResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /getQandA:
+    get:
+      tags:
+        - Question & Answer
+      summary: Get all questions and corresponding answers
+      description: Get all questions and corresponding answers to be shown in help
+        section
+      operationId: getAllQnA
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QnAResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /getallRoles:
+    get:
+      tags:
+        - Role
+      summary: Get all roles
+      description: Get all roles
+      operationId: getAllRoles
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /department/list:
+    get:
+      tags:
+        - Department
+      summary: Get all departments
+      description: Get all departments
+      operationId: getAllDepartments
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentListResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /department/{id}:
+    get:
+      tags:
+        - Department
+      summary: Get department detail
+      description: Get department detail
+      operationId: getDepartment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentDetailResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /admin/rule/saveOrUpdate:
+    put:
+      tags:
+        - Category
+      summary: Creates/updates a rule
+      description: Creates/updates a rule
+      operationId: saveorUpdateRule
+      requestBody:
+        description: Rule details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RuleRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: ruleRequest
+  /admin/rule/list:
+    get:
+      tags:
+        - Category
+      summary: Get categories
+      description: Get categories
+      operationId: getAllRules
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleListResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /saveAssignWork:
+    post:
+      tags:
+        - Regulatory
+      summary: Creates a regulatory
+      description: Creates a regulatory
+      operationId: saveRegulatory
+      requestBody:
+        description: Regulatory Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegulatoryRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: userRequest
+  /getAssignedWorks:
+    get:
+      tags:
+        - Regulatory
+      summary: Fetched reguatory informatiom
+      description: Fetches regulatory information summary
+      operationId: getRegulatorySummary
+      parameters:
+        - name: locationId
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegulatorySummaryResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /viewAssignWorkSummary/{id}:
+    get:
+      tags:
+        - Regulatory
+      summary: Fetched reguatory information summary
+      description: Fetches regulatory information summary for a given work ID
+      operationId: getRegulatorySummaryByWorkId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegulatoryDetailsResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /viewAssignWorkDetail/{workId}/rule/{ruleId}/subRule/{subRuleId}:
+    get:
+      tags:
+        - Regulatory
+      summary: Fetched reguatory information details
+      description: Fetches regulatory information details for a given work ID, ruleId and subRuleId
+      operationId: getRegulatorySummaryByWorkIdByRuleIdBySubRuleId
+      parameters:
+        - name: workId
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: ruleId
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: subRuleId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegulatorySubRuleDetailsResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /generateReport:
+    get:
+      tags:
+        - Regulatory
+      summary: Prepares a report for assigned work to users
+      description: Prepares a report for assigned work to users
+      operationId: generateAssignWorkReport
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /updateAssignWork/subRule:
+    put:
+      tags:
+        - Regulatory
+      summary: Updates remark
+      description: Update work remark against a work, rule and subrule for logged in user
+      operationId: updateAssginedWorkRemarks
+      requestBody:
+        description: SubRuleFieldRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubRuleFieldRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: subRuleFieldRequest
+  /updateAssignWork/subRule/validate:
+    put:
+      tags:
+        - Regulatory
+      summary: Validates subrule and work completion
+      description: Validates subrule and work completion for logged in user
+      operationId: validateAssginedWorkSubRule
+      requestBody:
+        description: RegulatoryWorkRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegulatoryWorkRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubRuleValidateResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: remarksRequest
+  /uploadAssignWorkFiles:
+    post:
+      tags:
+        - Regulatory
+      summary: Creates conformity files
+      description: Creates conformity files for a workId, ruleId, subRuleId against a logged in user
+      operationId: saveConformityFiles
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                assignWork:
+                  $ref: '#/components/schemas/RegulatoryWorkRequest'
+                file:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: regulatoryWorkRequest
+  /deleteAssignWorkFiles/{id}:
+    delete:
+      tags:
+        - Regulatory
+      summary: Delete Conformity files
+      description: Delete conformity files for a given work file id
+      operationId: deleteConformityFile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /deleteAssignedWork/{id}:
+    delete:
+      tags:
+        - Regulatory
+      summary: Delete Assigned work
+      description: Delete assigned work, related rules and related work files
+      operationId: deleteAssignedWork
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /updateAssignWorkSubmit/{assignWorkId}:
+    put:
+      tags:
+        - Regulatory
+      summary: Submit Assigned work
+      description: Submit assigned work
+      operationId: submitAssignedWork
+      parameters:
+        - name: assignWorkId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /getHistory:
+    get:
+      tags:
+        - Regulatory
+      summary: Fetched reguatory history details
+      description: Fetches regulatory history details for completed work
+      operationId: getRegulatoryHistory
+      parameters:
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: string
+            description: should be in yyyy-MM-dd format
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            description: should be in yyyy-MM-dd format
+        - name: departmentId
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: locationId
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkHistoryResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /notifications/view-notifications:
+    get:
+      tags:
+        - Notification
+      summary: Fetches notifications
+      description: Fetches notifications for user in context
+      operationId: getNotificationsSummary
+      parameters:
+        - name: notificationStatusType
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - read
+              - unread
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationListResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /notifications/view-notification/{id}:
+    get:
+      tags:
+        - Notification
+      summary: Fetches notification
+      description: Fetches notification for user in context
+      operationId: getNotificationDetails
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationDetailResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /notifications/markAllAsRead:
+    put:
+      tags:
+        - Notification
+      summary: Marks all notifications as read
+      description: Marks all notifications as read
+      operationId: markAllasRead
+      parameters:
+        - name: ids
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationReadResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /notifications/markAllAsRead/{id}:
+    put:
+      tags:
+        - Notification
+      summary: Marks a notification as read
+      description: Marks a notification as read
+      operationId: markNotificationasRead
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /ruleAndSubRule/list:
+    get:
+      tags:
+        - Rule & SubRule
+      summary: Get rules and subrules
+      description: Get rules and subrules for admin and superadmin
+      operationId: getAllRulesAndSubRules
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleSubRuleListResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /ruleAndSubRule/list/{departmentId}:
+    get:
+      tags:
+        - Rule & SubRule
+      summary: Get rules and subrules
+      description: Get rules and subrules for admin and superadmin by department ID
+      operationId: getAllRulesAndSubRulesByDepartmentId
+      parameters:
+        - name: departmentId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleSubRuleListResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /subRules/get/{ruleId}/{subRuleId}:
+    get:
+      tags:
+        - SubRule
+      summary: Get subrule
+      description: Get subrule for admin and superadmin
+      operationId: getAllSubRule
+      parameters:
+        - name: ruleId
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: subRuleId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubruleResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /admin/rule/delete/{id}:
+    delete:
+      tags:
+        - Category
+      summary: Deletes a rule
+      description: Deletes a rule on ruleId
+      operationId: deleteRule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /admin/subRule/saveOrUpdate:
+    put:
+      tags:
+        - SubRule
+      summary: Creates/updates a subrule
+      description: Creates/updates a subrule
+      operationId: saveorUpdateSubRule
+      requestBody:
+        description: Subrule details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubruleRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: subRuleRequest
+  /admin/subRule/v1/saveOrUpdate:
+    put:
+      tags:
+        - SubRule
+      summary: Creates/updates a subrule
+      description: Creates/updates a subrule
+      operationId: saveorUpdateSubruleMultipart
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                subRule:
+                  $ref: '#/components/schemas/SubruleRequest'
+                file:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: subRuleRequest
+  /admin/subRule/delete/{id}/{ruleId}:
+    delete:
+      tags:
+        - SubRule
+      summary: Deletes a subrule
+      description: Deletes a subrule on subruleId and ruleId
+      operationId: deleteSubRule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: ruleId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /saveFeedback:
+    post:
+      tags:
+        - Feedback
+      summary: Saves feedback
+      description: Saves feedback of a user in context
+      operationId: saveFeedback
+      requestBody:
+        description: Feedback details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: feedbackRequest
+  /contactUs:
+    post:
+      tags:
+        - QueryForm
+      summary: Saves query
+      description: Saves query of a user in context
+      operationId: saveQuery
+      requestBody:
+        description: QueryRequest
+        content:
+          application/json:
+            schema:
+              properties:
+                message:
+                  type: string
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: feedbackRequest
+  /company/get/{id}:
+    get:
+      tags:
+        - Company
+      summary: List company
+      description: Lists company details
+      operationId: listCompanyDetail
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyDetailResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /admin/user/saveOrUpdate:
+    put:
+      tags:
+        - User
+      summary: Creates/updates a user
+      description: Creates/updates a user
+      operationId: saveorUpdateUser
+      requestBody:
+        description: User details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdationResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: userRequest
+  /admin/user/v1/saveOrUpdate:
+    put:
+      tags:
+        - User
+      summary: Creates/updates a user
+      description: Creates/updates a user
+      operationId: saveorUpdateUserMultipart
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/UserRequest'
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdationResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: userRequest
+  /admin/user/list/{locationId}:
+    get:
+      tags:
+        - User
+      summary: Lists users
+      description: Lists all users
+      operationId: listUsers
+      parameters:
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: roleId
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: departmentId
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /getUserDetails:
+    get:
+      tags:
+        - User
+      summary: List user basic details
+      description: List user basic details
+      operationId: listUser
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BasicUserResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /saveUserDetails:
+    put:
+      tags:
+        - User
+      summary: Updates basic info of user
+      description: Updates basic info of user
+      operationId: saveorUpdateUserBasicMultipart
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/BasicUserRequest'
+                file:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdationResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        405:
+          description: Invalid input
+          content: { }
+        415:
+          description: Invalid content type
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+      x-codegen-request-body-name: basicUserRequest
+  /admin/user/get/{id}/{locationId}:
+    get:
+      tags:
+        - User
+      summary: Lists a user
+      description: Lists user details
+      operationId: listsUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+  /admin/user/{id}/{locationId}:
+    delete:
+      tags:
+        - User
+      summary: Deletes a user
+      description: Deletes a user
+      operationId: deleteUser
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+        - name: locationId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+        400:
+          description: Invalid request
+          content: { }
+        401:
+          description: Unauthenticated
+          content: { }
+        403:
+          description: Unauthorized
+          content: { }
+        500:
+          description: Internal server error
+          content: { }
+      security:
+        - Bearer: [ ]
+components:
+  schemas:
+    ValidateResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserBasicDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    UserBasicDetails:
+      type: object
+      properties:
+        emailId:
+          type: string
+        userName:
+          type: string
+        userId:
+          type: number
+    OTPResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/OTPDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    OTPValidation:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserBasicDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    OTPDetails:
+      type: object
+      properties:
+        otp:
+          type: integer
+          description: The fields would not be shown in production environment
+    LoginRequest:
+      required:
+        - emailId
+      type: object
+      properties:
+        emailId:
+          type: string
+        password:
+          type: string
+          description: parameter to consume password for authentication. the field
+            would be password in case of SUPER_ADMIN and otp in case of other roles
+        deviceType:
+          type: string
+          description: parameter to consume deviceType
+        deviceToken:
+          type: string
+          description: parameter to consume deviceToken
+    RegulatoryWorkRequest:
+      type: object
+      properties:
+        assignWorkId:
+          type: number
+        ruleId:
+          type: number
+        subRuleId:
+          type: number
+    SubRuleFieldRequest:
+      allOf:
+        - $ref: '#/components/schemas/RegulatoryWorkRequest'
+        - type: object
+          properties:
+            remarks:
+              type: string
+              description: required when remarks is updated
+            conformity:
+              type: boolean
+              default: false
+              description: required when level of conformity is updated
+            nonConformity:
+              type: string
+              description: Only required when conformity is set to false
+            field:
+              type: string
+              enum:
+                - REMARKS
+                - CONFORMITY
+    LoginResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TokenData'
+        status:
+          $ref: '#/components/schemas/Status'
+    TokenRequest:
+      required:
+        - refreshToken
+      type: object
+      properties:
+        refreshToken:
+          type: string
+    TokenResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TokenResponseData'
+        status:
+          $ref: '#/components/schemas/Status'
+    QnOResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/QnOListData'
+        status:
+          $ref: '#/components/schemas/Status'
+    QnAResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/QnAListData'
+        status:
+          $ref: '#/components/schemas/Status'
+    QnAListData:
+      type: object
+      properties:
+        qNa:
+          type: array
+          items:
+            $ref: '#/components/schemas/QnAData'
+    QnAData:
+      type: object
+      properties:
+        id:
+          type: number
+        question:
+          type: string
+        answer:
+          type: string
+    RoleResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/RoleListData'
+        status:
+          $ref: '#/components/schemas/Status'
+    RoleListData:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommonResponseData'
+    QnOListData:
+      type: object
+      properties:
+        qNo:
+          type: array
+          items:
+            $ref: '#/components/schemas/QnOData'
+    QnOData:
+      type: object
+      properties:
+        id:
+          type: number
+        question:
+          type: string
+        options:
+          $ref: '#/components/schemas/OptionData'
+    OptionData:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: number
+          description:
+            type: string
+    LocationResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/LocationDataList'
+        status:
+          $ref: '#/components/schemas/Status'
+    LocationDataList:
+      type: object
+      properties:
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommonResponseData'
+    CommonResponseData:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    TokenData:
+      type: object
+      properties:
+        id:
+          type: number
+        emailId:
+          type: string
+        roleId:
+          type: number
+        roleName:
+          type: string
+        active:
+          type: boolean
+        name:
+          type: string
+        awtToken:
+          type: string
+        jwtRefreshToken:
+          type: string
+        agentName:
+          type: string
+        companyName:
+          type: string
+        ownerName:
+          type: string
+        feedbackCompleted:
+          type: boolean
+          default: false
+    TokenResponseData:
+      type: object
+      properties:
+        token:
+          type: string
+        refreshToken:
+          type: string
+    ChannelDetails:
+      required:
+        - emailId
+        - otp
+      type: object
+      properties:
+        emailId:
+          type: string
+        otp:
+          type: integer
+    FeedbackRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/FeedbackRequestData'
+    FeedbackRequestData:
+      type: object
+      required:
+        - questionId
+        - selectedOptionId
+      properties:
+        questionId:
+          type: number
+        selectedOptionId:
+          type: number
+    RegulatoryRequest:
+      required:
+        - departmentId
+        - category
+        - assignPersonId
+        - completionDate
+        - rules
+        - locationId
+      type: object
+      properties:
+        departmentId:
+          type: number
+        locationId:
+          type: number
+        category:
+          type: string
+          enum:
+            - OTC
+            - PC
+        assignPersonId:
+          type: number
+        completionDate:
+          type: string
+          description: date should be in yyyy-mm-yy format
+        reviewerId:
+          type: number
+        functionalHeadId:
+          type: number
+        pickDateFrequency:
+          type: string
+          description: Value needed only in case of PC
+          enum:
+            - Weekly
+            - Monthly
+            - Quarterly
+            - Yearly
+        typeOfWork:
+          type: string
+          enum:
+            - regulatory
+            - nonRegulatory
+            - miscellaneous
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssignRuleRequest'
+    AssignRuleRequest:
+      required:
+        - ruleName
+        - subRuleNames
+      type: object
+      properties:
+        ruleName:
+          type: string
+        subRuleNames:
+          type: array
+          items:
+            type: string
+    BasicUserRequest:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        mobileNumber:
+          type: string
+    UserRequest:
+      required:
+        - departmentId
+        - emailId
+        - employeeId
+        - mobileNumber
+        - name
+        - roleId
+        - locationId
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory when editing a user
+        emailId:
+          type: string
+        mobileNumber:
+          type: string
+        departmentId:
+          type: number
+        employeeId:
+          type: string
+        locationId:
+          type: number
+        name:
+          type: string
+        roleId:
+          type: number
+        active:
+          type: boolean
+          description: Mandatory when editing a user
+          default: true
+        deleted:
+          type: boolean
+          description: Mandatory when editing a user
+          default: false
+        deviceToken:
+          type: string
+        deviceType:
+          type: string
+    UserUpdationResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserBasicDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    RegulatorySummaryResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/RegulatorySummaryList'
+        status:
+          $ref: '#/components/schemas/Status'
+    RegulatorySummaryList:
+      type: object
+      properties:
+        assignedWork:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegulatorySummary'
+    RegulatorySummary:
+      type: object
+      properties:
+        id:
+          type: number
+        departmentName:
+          type: string
+        reviewerName:
+          type: string
+        assignedPersonId:
+          type: number
+        submit:
+          type: boolean
+          default: false
+        functionalHeadName:
+          type: string
+        employeeId:
+          type: number
+        category:
+          type: string
+        assignedPersonName:
+          type: string
+        status:
+          type: string
+          enum:
+            - notStarted
+            - inProgress
+            - completed
+        delayWork:
+          type: number
+    RegulatoryDetailsResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/RegulatoryDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    RegulatoryDetails:
+      allOf:
+        - $ref: '#/components/schemas/RegulatorySummary'
+        - type: object
+          properties:
+            completionDate:
+              type: string
+            rules:
+              type: array
+              items:
+                $ref: '#/components/schemas/RegulatoryRuleResponse'
+    RegulatoryRuleResponse:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        subRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegulatorySubRuleResponse'
+    RegulatorySubRuleResponse:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    RegulatorySubRuleDetailsResponse:
+      allOf:
+        - $ref: '#/components/schemas/SubRuleDetails'
+        - type: object
+          properties:
+            subRuleCompleted:
+              type: boolean
+              default: false
+            assignedUserRemarks:
+              type: string
+            nonConfirmity:
+              type: string
+            conformity:
+              type: string
+            uploadedBy:
+              type: string
+            uploadedDate:
+              type: string
+            assignWorkFiles:
+              type: array
+              items:
+                $ref: '#/components/schemas/FileResponse'
+    NotificationDetailResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/NotificationDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    MenuResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/MenuList'
+        status:
+          $ref: '#/components/schemas/Status'
+    MenuList:
+      type: object
+      properties:
+        menus:
+          items:
+            $ref: '#/components/schemas/MenuDetails'
+    MenuDetails:
+      type: object
+      properties:
+        itemId:
+          type: string
+        itemName:
+          type: string
+    NotificationListResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/NotificationList'
+        status:
+          $ref: '#/components/schemas/Status'
+    NotificationList:
+      type: object
+      properties:
+        count:
+          type: number
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationDetails'
+    NotificationDetails:
+      type: object
+      properties:
+        id:
+          type: number
+        receiverId:
+          type: number
+        senderId:
+          type: number
+        updatedDate:
+          type: string
+        title:
+          type: string
+        notificationStatusType:
+          type: string
+          enum:
+            - read
+            - unread
+            - completed
+        message:
+          type: string
+    RuleListResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/RuleList'
+        status:
+          $ref: '#/components/schemas/Status'
+    RuleSubRuleListResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/RuleSubRuleList'
+        status:
+          $ref: '#/components/schemas/Status'
+    WorkHistoryResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/WorkHistoryList'
+        status:
+          $ref: '#/components/schemas/Status'
+    WorkHistoryList:
+      type: object
+      properties:
+        assignedWorks:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkHistoryDetails'
+    WorkHistoryDetails:
+      type: object
+      properties:
+        projectId:
+          type: string
+        projectName:
+          type: string
+        departmentId:
+          type: number
+        createdDate:
+          type: string
+    RuleList:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleDetails'
+    RuleSubRuleList:
+      type: array
+      items:
+        $ref: '#/components/schemas/RuleSubRuleDetails'
+    RuleSubRuleDetails:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Rule name
+        id:
+          type: number
+        isAdminCreated:
+          type: boolean
+        subRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubRuleSummary'
+    SubRuleSummary:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        isAdminCreated:
+          type: boolean
+        ruleId:
+          type: number
+    UserListResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserList'
+        status:
+          $ref: '#/components/schemas/Status'
+    UserList:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDetails'
+    UserResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    RuleDetails:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        departmentId:
+          type: number
+    SubruleResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SubRuleDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    SubRuleDetails:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        ruleId:
+          type: number
+        title:
+          type: string
+        responsibility:
+          type: string
+        description:
+          type: string
+        deleted:
+          type: boolean
+          default: false
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileResponse'
+    UserDetails:
+      type: object
+      properties:
+        id:
+          type: number
+        emailId:
+          type: string
+        roleId:
+          type: number
+        roleName:
+          type: number
+        locationId:
+          type: number
+        mobileNumber:
+          type: string
+        departmentName:
+          type: string
+        departmentId:
+          type: string
+        employeeId:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+        deleted:
+          type: boolean
+    DeleteUserResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/UserBasicDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    FeedbackResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/Status'
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/Status'
+    SubRuleValidateResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/ValidateData'
+        status:
+          $ref: '#/components/schemas/Status'
+    ValidateData:
+      type: object
+      properties:
+        subRuleCompleted:
+          type: boolean
+          default: false
+        status:
+          type: string
+          enum:
+            - notStarted
+            - inProgress
+            - underReview
+            - completed
+    CompanyDetailResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CompanyResponse'
+        status:
+          $ref: '#/components/schemas/Status'
+    DepartmentListResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/DepartmentResponseData'
+        status:
+          $ref: '#/components/schemas/Status'
+    DepartmentResponseData:
+      type: object
+      properties:
+        departments:
+          type: array
+          items:
+            $ref: '#/components/schemas/DepartmentResponse'
+    DepartmentDetailResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/DepartmentResponse'
+        status:
+          $ref: '#/components/schemas/Status'
+    RuleRequest:
+      required:
+        - name
+        - departmentId
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case rule is edited
+        name:
+          type: string
+        deleted:
+          type: boolean
+          description: May be sent in case rule is edited
+          default: false
+        departmentId:
+          type: number
+    SubruleRequest:
+      required:
+        - name
+        - ruleId
+        - title
+        - responsibility
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case subrule is edited
+        name:
+          type: string
+        deleted:
+          type: boolean
+          description: May be sent in case subrule is edited
+          default: false
+        ruleId:
+          type: number
+        title:
+          type: string
+        responsibility:
+          type: string
+        description:
+          type: string
+    DepartmentResponse:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        deleted:
+          type: boolean
+    BasicUserResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/BasicUserDetails'
+        status:
+          $ref: '#/components/schemas/Status'
+    FileResponse:
+      type: object
+      properties:
+        id:
+          type: number
+        fileName:
+          type: string
+    CommonResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/CommonData'
+        status:
+          $ref: '#/components/schemas/Status'
+    NotificationReadResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/Status'
+    BasicUserDetails:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        departmentName:
+          type: string
+          description: not applicable to admin/superadmin
+        employeeId:
+          type: string
+        emailId:
+          type: string
+        mobileNumber:
+          type: string
+    CommonData:
+      type: object
+      properties:
+        id:
+          type: number
+    CompanyResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Mandatory in case location is edited
+        companyName:
+          type: string
+        companyAddress:
+          type: string
+        adminLocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommonResponseData'
+        companyLogoPath:
+          type: string
+    Status:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
