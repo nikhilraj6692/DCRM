@@ -1,7 +1,6 @@
 package com.smp.app.dao;
 
 import com.smp.app.pojo.ReviewerProjectListInputTO;
-import com.smp.app.pojo.CompletedProjectListResponseTo;
 import com.smp.app.pojo.ConformityLevelResponseTO;
 import com.smp.app.pojo.ManagementPreviewDetailsResponseTO;
 import com.smp.app.pojo.MangtWelComeResponseTO;
@@ -42,7 +41,7 @@ public interface ProjectDao extends GenericDao<ProjectDetail, Integer> {
 
     List<Integer> savedReviewerLeadReviewerRecord(Integer projectId, boolean isReviewer);
 
-    List<CompletedProjectListResponseTo> getProjectListBasedOnStatus(Integer statusId);
+    List<ProjectListResponseTO> getProjectListBasedOnStatus(Integer statusId);
 
     MangtWelComeResponseTO getMangtWelComeContent(Integer managementId);
 

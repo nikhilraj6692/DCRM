@@ -28,6 +28,16 @@ public enum ProjectStatusEnum {
         return state;
     }
 
+    public static int getId(ProjectStatusEnum projectStatusEnum){
+        for(ProjectStatusEnum projectStatus : values()){
+            if(projectStatus == projectStatusEnum){
+                return projectStatus.getId();
+            }
+        }
+
+        throw new IllegalArgumentException(SMPAppConstants.INVALID_PROJECT_STATUS);
+    }
+
     public int getId() {
         return id;
     }

@@ -31,7 +31,6 @@ import com.smp.app.exception.UnAuthorizedException;
 import com.smp.app.pojo.BaseResponse;
 import com.smp.app.pojo.BasicResponseTO;
 import com.smp.app.pojo.BookListResponseTO;
-import com.smp.app.pojo.CompletedProjectListResponseTo;
 import com.smp.app.pojo.ConformityLevelResponseTO;
 import com.smp.app.pojo.DeleteAttachmentInputTO;
 import com.smp.app.pojo.DeleteImgResponseTO;
@@ -94,7 +93,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -177,7 +175,7 @@ public class SMPServiceImpl implements SMPService {
 
     @Override
     public TokenResponse renewToken(TokenRequest token) {
-        UserDetail user = userDetailDao.findByRefreshToken(userContext.getUserEmailId(), token.getRefreshToken());
+        UserDetail user = userDetailDao.findByRefreshToken(token.getRefreshToken());
 
         if (null != user) {
             try {
@@ -218,7 +216,7 @@ public class SMPServiceImpl implements SMPService {
         ruleDetail.setCreatedDate(new Date());
 
         ProvisionBookDetail provisionBookDetail = this.provisionBookDao.read(ruleInputTO.getProvisionBookId());
-        if(null == provisionBookDetail){
+        if (null == provisionBookDetail) {
             throw new NoDataFoundException(SMPAppConstants.INVALID_PROVISION_BOOK_ID);
         }
         ruleDetail.setProvisionBookDetail(provisionBookDetail);
@@ -282,8 +280,8 @@ public class SMPServiceImpl implements SMPService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     public JSONObject saveProjectDetail(MultipartFile file, SaveProjectInputTO projectInfo) {
-        for(ManagementInputTO managementInputTO : projectInfo.getManagementDetail()){
-            if(checkUserExistence(managementInputTO.getUserEmailId())){
+        for (ManagementInputTO managementInputTO : projectInfo.getManagementDetail()) {
+            if (checkUserExistence(managementInputTO.getUserEmailId())) {
                 throw new BusinessException(SMPAppConstants.USER_ALREADY_EXISTS);
             }
         }
@@ -305,7 +303,7 @@ public class SMPServiceImpl implements SMPService {
 
         List<UserDetail> userDetails = new ArrayList<>();
 
-        for(ManagementInputTO managementInputTO : projectInfo.getManagementDetail()){
+        for (ManagementInputTO managementInputTO : projectInfo.getManagementDetail()) {
 
             UserDetail userDetail = new UserDetail();
             userDetail.setUserName(managementInputTO.getUsername());
@@ -329,7 +327,7 @@ public class SMPServiceImpl implements SMPService {
             projectRuleRelation.setProjectDetail(projectDetail);
 
             ProjectRuleDetail projectRuleDetail = this.projectRuleDao.read(ruleId);
-            if(null == projectRuleDetail){
+            if (null == projectRuleDetail) {
                 throw new InvalidInputException(SMPAppConstants.INVALID_RULE_ID);
             }
 
@@ -337,8 +335,6 @@ public class SMPServiceImpl implements SMPService {
             projectRuleRelation.setCreatedDate(new Date());
             this.projectRuleRelationDao.saveOrUpdate(projectRuleRelation);
         }
-
-
 
         if (file != null) {// For local commented this code
             Integer projectId = companyDetail.getProjectList().get(0).getProjectId();
@@ -452,7 +448,7 @@ public class SMPServiceImpl implements SMPService {
     @Override
     public boolean checkUserExistence(String userEmailId) {
         UserDetail userDetail = this.userDetailDao.getUserBasedEmail(userEmailId);
-        boolean isUserExist = null!=userDetail?true:false;
+        boolean isUserExist = null != userDetail;
         return isUserExist;
     }
 
@@ -554,13 +550,6 @@ public class SMPServiceImpl implements SMPService {
         return false;
     }
 
-
-    @Override
-    public List<CompletedProjectListResponseTo> getCompletedProjectList() {
-        return this.projectDao.getProjectListBasedOnStatus(ProjectStatusEnum.LEAD_REVIEWER_COMPLETED.getId());
-    }
-
-
     @Override
     public BasicResponseTO changeCompProjectStatus(Integer projectId) {
         BasicResponseTO basicResponseTO = new BasicResponseTO();
@@ -584,8 +573,12 @@ public class SMPServiceImpl implements SMPService {
 
 
     @Override
-    public List<CompletedProjectListResponseTo> getOpenStateProjectList() {
-        return this.projectDao.getProjectListBasedOnStatus(ProjectStatusEnum.OPEN.getId());
+    public List<ProjectListResponseTO> getProjectList(ProjectStatusEnum statusEnum) {
+        Integer id = null;
+        if (null != statusEnum) {
+            id = ProjectStatusEnum.getId(statusEnum);
+        }
+        return this.projectDao.getProjectListBasedOnStatus(id);
     }
 
 
@@ -620,28 +613,25 @@ public class SMPServiceImpl implements SMPService {
 
     @Override
     public BasicResponseTO updateProjectRuleDetail(UpdateProjectRuleInputTO updateProjInput) {
-        BasicResponseTO basicResponseTO = new BasicResponseTO();
+        ProjectDetail projectDetail = this.projectDao.read(updateProjInput.getProjectId());
 
-        try {
-            ProjectDetail projectDetail = this.projectDao.read(updateProjInput.getProjectId());
-            for (Integer ruleId : updateProjInput.getRuleIdList()) {
-                ProjectRuleRelation projectRuleRelation = new ProjectRuleRelation();
-                projectRuleRelation.setProjectDetail(projectDetail);
-                projectRuleRelation.setProjectRuleDetail(this.projectRuleDao.read(ruleId));
-                projectRuleRelation.setCreatedDate(new Date());
-                this.projectRuleRelationDao.saveOrUpdate(projectRuleRelation);
-            }
-            basicResponseTO.setResponseStatus(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_SUCCESS_STATUS)));
-            basicResponseTO.setResponseMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.SAVE_PROJECT_DETAIL_SUCCESS_MSG));
-        } catch (Exception e) {
-            basicResponseTO.setResponseStatus(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_FAILURE_STATUS)));
-            basicResponseTO.setResponseMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.SAVE_PROJECT_DETAIL_FAILURE_MSG));
+        if(null == projectDetail){
+            throw new InvalidInputException(SMPAppConstants.INVALID_PROJECT_ID);
         }
-        return basicResponseTO;
+
+        for (Integer ruleId : updateProjInput.getRuleIdList()) {
+            ProjectRuleRelation projectRuleRelation = new ProjectRuleRelation();
+            projectRuleRelation.setProjectDetail(projectDetail);
+            ProjectRuleDetail projectRuleDetail = this.projectRuleDao.read(ruleId);
+
+            if(null == projectRuleDetail){
+                throw new InvalidInputException(SMPAppConstants.INVALID_RULE_ID);
+            }
+            projectRuleRelation.setProjectRuleDetail(projectRuleDetail);
+            projectRuleRelation.setCreatedDate(new Date());
+            this.projectRuleRelationDao.saveOrUpdate(projectRuleRelation);
+        }
+        return new BasicResponseTO(SMPAppConstants.PROJECT_UPDATED_SUCCESSFULLY);
     }
 
 
@@ -670,13 +660,6 @@ public class SMPServiceImpl implements SMPService {
         basicResponseTO.setImgFullURL(attachmentInputTO.getFullImageURL());
         return basicResponseTO;
     }
-
-
-    @Override
-    public List<ProjectListResponseTO> getProjectList() {
-        return this.projectDao.getProjectList();
-    }
-
 
     @Override
     public Map<String, List<RuleListResponseTO>> getRuleListBasedOnProjectId(Integer projectId) {

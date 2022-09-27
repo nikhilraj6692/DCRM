@@ -36,6 +36,7 @@ import com.smp.app.service.SMPService;
 import com.smp.app.util.CommonUtils;
 import com.smp.app.util.ImageUpload;
 import com.smp.app.util.PDFGenerator;
+import com.smp.app.util.ProjectStatusEnum;
 import com.smp.app.util.SMPAppConstants;
 import java.io.File;
 import java.io.IOException;
@@ -107,6 +108,7 @@ public class SmpMasterController {
         return new BasicResponseTO(SMPAppConstants.LOG_OUT_SUCCESSFUL);
     }
 
+    @PublicApi
     @PostMapping("/silent-renewal")
     public BaseResponse renewToken(@Valid @RequestBody TokenRequest tokenRequest) {
         TokenResponse tokenResponse = smpService.renewToken(tokenRequest);
@@ -128,8 +130,6 @@ public class SmpMasterController {
 
         return new BaseResponse(bookListResponseTOS, new BasicResponseTO(SMPAppConstants.BOOKS_RETRIEVED_SUCCESSFULLY));
     }
-
-
 
     @RequestMapping(value = "/getRuleList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse getRuleList(@RequestParam(name = "bookId", required = false) Integer bookId) {
@@ -168,11 +168,36 @@ public class SmpMasterController {
             new BasicResponseTO(SMPAppConstants.PROJECT_SAVED_SUCCESSFUL));
     }
 
-    @RequestMapping(value = "/getOpenStateProjectList", method = RequestMethod.GET, consumes =
-        MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CompletedProjectListResponseTo> getOpenStateProjectList() {
-        return this.smpService.getOpenStateProjectList();
+    @RequestMapping(value = "/getProjectList", method = RequestMethod.GET, produces =
+        MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse getProjectsList(@RequestParam(name = "state", required = false) ProjectStatusEnum projectStatus) {
+        return new BaseResponse(this.smpService.getProjectList(projectStatus), new BasicResponseTO(SMPAppConstants.PROJECT_RETRIEVAL_SUCCESSFUL));
     }
+
+    @RequestMapping(value = "/getNewBooksForExistingProject/{projectId}", method = RequestMethod.GET, produces =
+        MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse getNewBooksForExistingProject(@PathVariable Integer projectId) {
+        return new BaseResponse(this.smpService.getNewBooksForExistingProject(projectId), new BasicResponseTO(SMPAppConstants.BOOKS_RETRIEVED_SUCCESSFULLY));
+    }
+
+    @RequestMapping(value = "/updateProjectRuleDetail", method = RequestMethod.PUT, consumes =
+        MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public BasicResponseTO updateProjectRuleDetail(@RequestBody UpdateProjectRuleInputTO updateProjInput) {
+        return this.smpService.updateProjectRuleDetail(updateProjInput);
+    }
+
+    @RequestMapping(value = "/getProjectAndReviewerList", method = RequestMethod.GET, produces =
+        MediaType.APPLICATION_JSON_VALUE)
+    public ProjectReviewerResponseTO getProjectAndReviewerList() {
+        return this.smpService.getProjectAndReviewerList();
+    }
+
+    @RequestMapping(value = "/saveProjectReviewerRelation", method = RequestMethod.POST, produces =
+        MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public BasicResponseTO saveProjectReviewerRelation(@RequestBody ProjectReviewerRelationInputTO reviewerRelationInput) {
+        return this.smpService.saveProjectReviewerRelation(reviewerRelationInput);
+    }
+
 
     @RequestMapping(value = "/updateProjectStatus", method = RequestMethod.POST, produces =
         MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -260,19 +285,6 @@ public class SmpMasterController {
         return pdfReportResponseTO;
     }
 
-
-    @RequestMapping(value = "/getProjectAndReviewerList", method = RequestMethod.GET, produces =
-        MediaType.APPLICATION_JSON_VALUE)
-    public ProjectReviewerResponseTO getProjectAndReviewerList() {
-        return this.smpService.getProjectAndReviewerList();
-    }
-
-    @RequestMapping(value = "/saveProjectReviewerRelation", method = RequestMethod.POST, produces =
-        MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BasicResponseTO saveProjectReviewerRelation(@RequestBody ProjectReviewerRelationInputTO reviewerRelationInput) {
-        return this.smpService.saveProjectReviewerRelation(reviewerRelationInput);
-    }
-
     @RequestMapping(value = "/updateReviewerTokenDetail", method = RequestMethod.POST, produces =
         MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public BasicResponseTO updateReviewerTokenDetail(@RequestBody TokenDetailInputTO tokenInput) {
@@ -285,44 +297,17 @@ public class SmpMasterController {
         return this.smpService.getNotificationList(UserId);
     }
 
-    @RequestMapping(value = "/getCompletedProjectList", method = RequestMethod.GET, consumes =
-        MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CompletedProjectListResponseTo> getCompletedProjectList() {
-        return this.smpService.getCompletedProjectList();
-    }
-
-
-
-
     @RequestMapping(value = "/changeCompProjectStatus/{projectId}", method = RequestMethod.GET, consumes =
         MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public BasicResponseTO changeCompProjectStatus(@PathVariable Integer projectId) {
         return this.smpService.changeCompProjectStatus(projectId);
     }
 
-    @RequestMapping(value = "/getNewBooksForExistingProject/{projectId}", method = RequestMethod.GET, produces =
-        MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, List<RuleListResponseTO>> getNewBooksForExistingProject(@PathVariable Integer projectId) {
-        return this.smpService.getNewBooksForExistingProject(projectId);
-    }
-
-
-    @RequestMapping(value = "/updateProjectRuleDetail", method = RequestMethod.POST, consumes =
-        MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BasicResponseTO updateProjectRuleDetail(@RequestBody UpdateProjectRuleInputTO updateProjInput) {
-        return this.smpService.updateProjectRuleDetail(updateProjInput);
-    }
 
     @RequestMapping(value = "/deleteUploadedAttachment", method = RequestMethod.POST, consumes =
         MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public DeleteImgResponseTO deleteUploadedAttachment(@RequestBody DeleteAttachmentInputTO attachmentInputTO) {
         return this.smpService.deleteUploadedAttachment(attachmentInputTO);
-    }
-
-
-    @RequestMapping(value = "/getProjectList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProjectListResponseTO> getProjectList() {
-        return this.smpService.getProjectList();
     }
 
     @RequestMapping(value = "/getRuleListBasedOnProjectId/{projectId}", method = RequestMethod.GET, produces =

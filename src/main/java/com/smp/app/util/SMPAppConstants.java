@@ -92,4 +92,9 @@ public class SMPAppConstants {
     public static final String INVALID_REFRESH_TOKEN = "SMP028";
     public static final String AUTH_TOKEN_VALID = "SMP029";
     public static final String RENEWAL_SUCCESSFUL = "SMP030";
+    public static final String PROJECT_RETRIEVAL_SUCCESSFUL = "SMP031";
+    public static final String INVALID_PROJECT_STATUS = "SMP032";
+    public static final String INVALID_PROJECT_ID = "SMP033";
+    public static final String PROJECT_UPDATED_SUCCESSFULLY = "SMP034";
+
 }

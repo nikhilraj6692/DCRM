@@ -78,12 +78,11 @@ public class UserDetailDaoImpl extends GenericDaoImpl<UserDetail, Integer> imple
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
-    public UserDetail findByRefreshToken(String userEmailId, String refreshToken) {
+    public UserDetail findByRefreshToken(String refreshToken) {
         Session session = this.getSession();
         UserDetail resultObj = null;
-        String hql = "from UserDetail as userDetail " + "where lower(userDetail.userEmailId) =:userEmailId "
-            + "and userDetail.refreshToken =:refreshToken";
-        Query query = session.createQuery(hql).setParameter("userEmailId", userEmailId.trim().toLowerCase())
+        String hql = "from UserDetail as userDetail " + "where userDetail.refreshToken =:refreshToken";
+        Query query = session.createQuery(hql)
             .setParameter("refreshToken", refreshToken);
 
         List<UserDetail> resultList = query.list();

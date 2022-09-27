@@ -14,7 +14,6 @@ import com.smp.app.pojo.TokenResponse;
 import com.smp.app.pojo.UpdateProjectRuleInputTO;
 import com.smp.app.pojo.BasicResponseTO;
 import com.smp.app.pojo.BookListResponseTO;
-import com.smp.app.pojo.CompletedProjectListResponseTo;
 import com.smp.app.pojo.DeleteImgResponseTO;
 import com.smp.app.pojo.FileReturnListResponseTO;
 import com.smp.app.pojo.FileReturnNotificationResponseTO;
@@ -24,6 +23,7 @@ import com.smp.app.pojo.ProjectReviewerResponseTO;
 import com.smp.app.pojo.RuleListResponseTO;
 import com.smp.app.entity.ProjectDetail;
 import com.smp.app.pojo.UserLoginInputTO;
+import com.smp.app.util.ProjectStatusEnum;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -61,11 +61,10 @@ public interface SMPService {
 
     Boolean uploadProjectReport(File file, Integer projectId, Integer projVersionNum, String companyName);
 
-    List<CompletedProjectListResponseTo> getCompletedProjectList();
 
     BasicResponseTO changeCompProjectStatus(Integer projectId);
 
-    List<CompletedProjectListResponseTo> getOpenStateProjectList();
+    List<ProjectListResponseTO> getProjectList(ProjectStatusEnum status);
 
     Map<String, List<RuleListResponseTO>> getNewBooksForExistingProject(Integer projectId);
 
@@ -74,8 +73,6 @@ public interface SMPService {
     ProjectDetail readProjectDetail(Integer projectId);
 
     DeleteImgResponseTO deleteUploadedAttachment(DeleteAttachmentInputTO attachmentInputTO);
-
-    List<ProjectListResponseTO> getProjectList();
 
     Map<String, List<RuleListResponseTO>> getRuleListBasedOnProjectId(Integer projectId);
 

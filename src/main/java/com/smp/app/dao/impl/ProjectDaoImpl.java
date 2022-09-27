@@ -2,7 +2,6 @@ package com.smp.app.dao.impl;
 
 import com.smp.app.dao.ProjectDao;
 import com.smp.app.pojo.ReviewerProjectListInputTO;
-import com.smp.app.pojo.CompletedProjectListResponseTo;
 import com.smp.app.pojo.ConformityLevelResponseTO;
 import com.smp.app.pojo.ManagementPreviewDetailsResponseTO;
 import com.smp.app.pojo.MangtWelComeResponseTO;
@@ -369,13 +368,21 @@ public class ProjectDaoImpl extends GenericDaoImpl<ProjectDetail, Integer> imple
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
-    public List<CompletedProjectListResponseTo> getProjectListBasedOnStatus(Integer targetStatusId) {
+    public List<ProjectListResponseTO> getProjectListBasedOnStatus(Integer targetStatusId) {
         Session session = this.getSession();
         String hqlSql = "select projectDetail.projectId as projectId, " + "projectDetail.projectName as projectName "
-            + "from ProjectDetail as projectDetail " + "where projectDetail.projectStatus =:projectStatusId";
+            + "from ProjectDetail as projectDetail ";
 
-        Query query = session.createQuery(hqlSql).setParameter("projectStatusId", targetStatusId)
-            .setResultTransformer(Transformers.aliasToBean(CompletedProjectListResponseTo.class));
+        if(null!=targetStatusId){
+            hqlSql+= "where projectDetail.projectStatus =:projectStatusId";
+        }
+
+        Query query = session.createQuery(hqlSql);
+        if(null!=targetStatusId){
+            query.setParameter("projectStatusId", targetStatusId);
+
+        }
+        query.setResultTransformer(Transformers.aliasToBean(ProjectListResponseTO.class));
         return query.list();
     }
 

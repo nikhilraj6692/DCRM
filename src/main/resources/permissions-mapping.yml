@@ -24,3 +24,12 @@ api:
     "[/SMPMasterAction/silent-renewal]":
       method: POST
       capabilityId: User.SilentRenewal_WRITE
+    "[/SMPMasterAction/getProjectList]":
+      method: GET
+      capabilityId: User.Projects_READ
+    "[/SMPMasterAction/getNewBooksForExistingProject/.*]":
+      method: GET
+      capabilityId: User.NewBookList_READ
+    "[/SMPMasterAction/updateProjectRuleDetail]":
+      method: PUT
+      capabilityId: User.ProjectRule_UPDATE

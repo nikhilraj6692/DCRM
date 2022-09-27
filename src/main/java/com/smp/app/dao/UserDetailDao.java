@@ -13,5 +13,5 @@ public interface UserDetailDao extends GenericDao<UserDetail, Integer> {
 
     List<UserDetailReviewerRelation> getUserListReviewerRelation();
 
-    UserDetail findByRefreshToken(String userEmailId, String refreshToken);
+    UserDetail findByRefreshToken(String refreshToken);
 }
