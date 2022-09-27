@@ -25,7 +25,7 @@ public class RuleRelevantCircular implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "circular_id", nullable = false, unique = true)
     public Integer getCircularId() {
         return circularId;

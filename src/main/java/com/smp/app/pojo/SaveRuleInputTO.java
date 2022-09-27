@@ -1,23 +1,30 @@
 package com.smp.app.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.smp.app.util.SMPAppConstants;
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class SaveRuleInputTO {
-
-    private Integer ruleId;
+    @NotNull(message = SMPAppConstants.INVALID_PROVISION_BOOK_ID)
     private Integer provisionBookId;
+    @NotBlank(message = SMPAppConstants.INVALID_RULE_SUB_CLAUSE)
     private String ruleSubclauseNum;
+    @NotBlank(message = SMPAppConstants.INVALID_RULE_TITLE)
     private String ruleTitle;
+    @NotBlank(message = SMPAppConstants.INVALID_RULE_RESPONSIBILITY)
     private String ruleResponsibilty;
+    @NotBlank(message = SMPAppConstants.INVALID_RULE_DESCRIPTION)
     private String ruleDescription;
-    private String ruleRelevantCircular;
+    @Valid
+    private List<RelevantCircularInputTO> ruleRelevantCirculars;
 
-
-    public Integer getRuleId() {
-        return ruleId;
-    }
-
-    public void setRuleId(Integer ruleId) {
-        this.ruleId = ruleId;
-    }
 
     public Integer getProvisionBookId() {
         return provisionBookId;
@@ -59,12 +66,12 @@ public class SaveRuleInputTO {
         this.ruleDescription = ruleDescription;
     }
 
-    public String getRuleRelevantCircular() {
-        return ruleRelevantCircular;
+    public List<RelevantCircularInputTO> getRuleRelevantCirculars() {
+        return ruleRelevantCirculars;
     }
 
-    public void setRuleRelevantCircular(String ruleRelevantCircular) {
-        this.ruleRelevantCircular = ruleRelevantCircular;
+    public void setRuleRelevantCirculars(List<RelevantCircularInputTO> ruleRelevantCirculars) {
+        this.ruleRelevantCirculars = ruleRelevantCirculars;
     }
 
 }

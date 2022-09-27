@@ -28,7 +28,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    show-sql: false
+    show-sql: true
     generate-ddl: true
     hibernate:
       ddl-auto: create
@@ -70,10 +70,10 @@ logging:
     org:
       hibernate:
         SQL: INFO
-        #type:
-        #  descriptor:
-        #    sql:
-        #      BasicBinder: TRACE
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
 
 #JWT configuration
 jwt:

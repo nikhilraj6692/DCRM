@@ -1,0 +1,25 @@
+
+J
+java:S3740'"/Provide the parametrized type for this generic.(˜÷³¶ùÿÿÿÿ
+J
+java:S37408"/Provide the parametrized type for this generic.(‚Ž®¾øÿÿÿÿ
+J
+java:S3740I"/Provide the parametrized type for this generic.(²Â¿±øÿÿÿÿ
+H
+java:S1874'"-Remove this use of "Query"; it is deprecated.(˜÷³¶ùÿÿÿÿ
+H
+java:S18748"-Remove this use of "Query"; it is deprecated.(‚Ž®¾øÿÿÿÿ
+D
+java:S1481E".Remove this unused "resultObj" local variable.(„´‡Ê
+H
+java:S1874I"-Remove this use of "Query"; it is deprecated.(²Â¿±øÿÿÿÿ
+W
+java:S1874J"<Remove this use of "setResultTransformer"; it is deprecated.(·ÿÝ¸þÿÿÿÿ
+z
+java:S1192"_Define a constant instead of duplicating this literal "from UserDetail as userDetail " 3 times.(€þ•Èûÿÿÿÿ
+Y
+java:S1155,">Use isEmpty() to check whether the collection is empty or not.(Ø©ôêýÿÿÿÿ
+Y
+java:S1155;">Use isEmpty() to check whether the collection is empty or not.(Ø©ôêýÿÿÿÿ
+}
+java:S1488K"bImmediately return this expression instead of assigning it to the temporary variable "resultList".(íÌ¼Ïþÿÿÿÿ

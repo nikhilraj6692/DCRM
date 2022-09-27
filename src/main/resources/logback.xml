@@ -20,7 +20,7 @@
       <totalSizeCap>2GB</totalSizeCap>
     </rollingPolicy>
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %X{X-correlation-id} %-5level %logger{36} - %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %X{X-correlation-id} %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
 

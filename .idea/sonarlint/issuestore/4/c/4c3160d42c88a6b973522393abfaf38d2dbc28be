@@ -1,0 +1,35 @@
+
+N
+java:S1874”"2Remove this use of "JsonParser"; it is deprecated.(»«¹•ûÿÿÿÿ
+I
+java:S1874”"-Remove this use of "parse"; it is deprecated.(»«¹•ûÿÿÿÿ
+R	java:S125–"<This block of commented-out lines of code should be removed.(¡«×¿
+R	java:S125­"<This block of commented-out lines of code should be removed.(’Œ“Û
+N
+java:S1874Ù"2Remove this use of "JsonParser"; it is deprecated.(½ğæåúÿÿÿÿ
+I
+java:S1874Ù"-Remove this use of "parse"; it is deprecated.(½ğæåúÿÿÿÿ
+p
+java:S2293’"YReplace the type specification in this constructor call with the diamond operator ("<>").(š¬²‰
+p
+java:S2293ö"YReplace the type specification in this constructor call with the diamond operator ("<>").(¢•µ±
+u
+java:S2293‰"YReplace the type specification in this constructor call with the diamond operator ("<>").(¯ô¢‚ùÿÿÿÿ
+u
+java:S2293‘"YReplace the type specification in this constructor call with the diamond operator ("<>").(ö²œ‡üÿÿÿÿ
+p
+java:S2293£"YReplace the type specification in this constructor call with the diamond operator ("<>").(¢•µ±
+p
+java:S2293×"YReplace the type specification in this constructor call with the diamond operator ("<>").(»Ôü«
+
+java:S1192J"kDefine a constant instead of duplicating this literal "smp.cloud.project_logo.read_image_base_url" 3 times.(¤Êšº
+‰
+java:S1192‚"rDefine a constant instead of duplicating this literal "smp.cloud.circular_attachment.read_image_base_url" 3 times.(Õó«ê
+U
+java:S1155">Use isEmpty() to check whether the collection is empty or not.(ÏŒâ
+F
+java:S5411»"*Use the primitive boolean expression here.(Üñîåûÿÿÿÿ
+F
+java:S5411à"*Use the primitive boolean expression here.(Üñîåûÿÿÿÿ
+e
+java:S2259¡"IA "NullPointerException" could be thrown; "orgFileName" is nullable here.(òË©™ûÿÿÿÿ

@@ -4,14 +4,16 @@ import com.google.gson.JsonObject;
 import com.smp.app.pojo.BaseResponse;
 import com.smp.app.pojo.DeleteAttachmentInputTO;
 import com.smp.app.pojo.FileToReturnSaveInputTO;
-import com.smp.app.pojo.LoginResponseTO;
 import com.smp.app.pojo.ProjectReviewerRelationInputTO;
 import com.smp.app.pojo.ProjectStatusInputTO;
+import com.smp.app.pojo.SaveProjectInputTO;
+import com.smp.app.pojo.SaveRuleInputTO;
 import com.smp.app.pojo.TokenDetailInputTO;
+import com.smp.app.pojo.TokenRequest;
+import com.smp.app.pojo.TokenResponse;
 import com.smp.app.pojo.UpdateProjectRuleInputTO;
 import com.smp.app.pojo.BasicResponseTO;
 import com.smp.app.pojo.BookListResponseTO;
-import com.smp.app.pojo.ChechUserExistenceResponseTO;
 import com.smp.app.pojo.CompletedProjectListResponseTo;
 import com.smp.app.pojo.DeleteImgResponseTO;
 import com.smp.app.pojo.FileReturnListResponseTO;
@@ -25,22 +27,25 @@ import com.smp.app.pojo.UserLoginInputTO;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface SMPService {
 
-    BasicResponseTO saveRuleDetail(String ruleDetailStr);
+    JSONObject saveRuleDetail(SaveRuleInputTO ruleDetail);
 
     //public BasicResponseTO saveRuleDetail(String ruleDetailStr, MultipartFile file);
     BasicResponseTO saveCompanyDetail(List<MultipartFile> attachmentList, JsonObject companyDetailsJsonObj);
 
-    BasicResponseTO saveProjectDetail(MultipartFile file, String projectDetail);
+    JSONObject saveProjectDetail(MultipartFile file, SaveProjectInputTO projectInfo);
 
     BasicResponseTO updateProjectStatus(ProjectStatusInputTO projectInputTO);
 
-    Map<String, List<RuleListResponseTO>> getRuleList();
+    Map<String, List<RuleListResponseTO>> getRuleList(Integer bookId);
 
-    ChechUserExistenceResponseTO chechUserExistence(String userEmailId);
+    boolean checkUserExistence(String userEmailId);
 
     List<BookListResponseTO> getBookList();
 
@@ -85,4 +90,8 @@ public interface SMPService {
     BasicResponseTO updateFileReturnDetail(MultipartFile file, String fileReturnDetail);
 
     BaseResponse login(UserLoginInputTO loginDetail);
+
+    void logOut(HttpServletRequest request, HttpServletResponse response);
+
+    TokenResponse renewToken(TokenRequest tokenRequest);
 }

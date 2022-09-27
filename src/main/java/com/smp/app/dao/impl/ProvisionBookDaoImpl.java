@@ -27,6 +27,15 @@ public class ProvisionBookDaoImpl extends GenericDaoImpl<ProvisionBookDetail, In
     }
 
     @Override
+    public List<ProvisionBookDetail> getBookList(Integer bookId) {
+        Session session = this.getSession();
+        String hql = "from ProvisionBookDetail as bookDetail where :bookId is null or bookDetail.bookId =:bookId order by bookDetail.bookName asc ";
+        Query query = session.createQuery(hql);
+        query.setParameter("bookId", bookId);
+        return query.list();
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
     public List<Object[]> getBookListBasedOnManagementId(Integer managementId) {
         Session session = this.getSession();

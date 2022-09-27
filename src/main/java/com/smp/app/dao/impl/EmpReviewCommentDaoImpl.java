@@ -37,10 +37,10 @@ public class EmpReviewCommentDaoImpl extends GenericDaoImpl<UserReviewComments, 
                 + "where empDetail.user_rule_id = " + UserRuleEnum.LEAD_REVIEWER.getId()
                 + "  AND empDetail.device_token_value IS not null " + "AND device_token_value != ''";
         } else {
-            nativeSql = "SELECT empDetail.id, empDetail.device_token_value " + "FROM employee_detail  as empDetail "
+            /*nativeSql = "SELECT empDetail.id, empDetail.device_token_value " + "FROM employee_detail  as empDetail "
                 + "where (empDetail.id = " + projectDetail.getManagementDetail().getUserId() + " OR empDetail.id = "
                 + projectDetail.getReviewerId() + ")  AND empDetail.device_token_value IS not null "
-                + "AND device_token_value != ''";
+                + "AND device_token_value != ''";*/
         }
 
         Query query = session.createSQLQuery(nativeSql);

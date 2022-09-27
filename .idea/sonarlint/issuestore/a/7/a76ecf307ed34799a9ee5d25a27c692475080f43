@@ -1,0 +1,17 @@
+
+A
+java:S1075C"&Remove this hard-coded path-delimiter.(ß«‚ûùÿÿÿÿ
+A
+java:S1075k"&Remove this hard-coded path-delimiter.(ß«‚ûùÿÿÿÿ
+Q	java:S125o"<This block of commented-out lines of code should be removed.(ªë¦Ä
+Q	java:S125y"<This block of commented-out lines of code should be removed.(¶Ñµ¥
+o
+java:S2293?"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÉğÚå
+o
+java:S2293g"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÉğÚå
+}
+java:S1192"gDefine a constant instead of duplicating this literal "Image Uploaded Successfully !!!!!!!!!!" 3 times.(×ÎÁÒ
+ƒ
+java:S1192&"hDefine a constant instead of duplicating this literal "smp.project_reviewer_images.folder_name" 3 times.(÷°¢Èıÿÿÿÿ
+J
+java:S1066X"/Merge this if statement with the enclosing one.(¦‰•¼ùÿÿÿÿ

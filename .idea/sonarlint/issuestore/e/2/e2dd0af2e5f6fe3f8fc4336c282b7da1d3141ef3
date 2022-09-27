@@ -1,0 +1,20 @@
+
+T
+java:S5993"9Change the visibility of this constructor to "protected".(ØûÄÒøÿÿÿÿ
+O
+java:S5993"9Change the visibility of this constructor to "protected".(‹òÉ“
+^	java:S119"IRename this generic name to match the regular expression '^[A-Z][0-9]?$'.(ù‰ÌÍ
+^	java:S119"IRename this generic name to match the regular expression '^[A-Z][0-9]?$'.(ù‰ÌÍ
+h
+java:S3776P"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(¿‹Ã’
+Q
+java:S1874Q"6Remove this use of "createCriteria"; it is deprecated.(ŸŠ–Õøÿÿÿÿ
+R	java:S125"<This block of commented-out lines of code should be removed.(Ù®¶Ñ
+t
+java:S2293B"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÿİıÿÿÿÿ
+r
+java:S1488z"\Immediately return this expression instead of assigning it to the temporary variable "list".(¨¯Œ§
+R
+java:S4973p"<Strings and Boxed types should be compared using "equals()".(‹—á
+W
+java:S4973r"<Strings and Boxed types should be compared using "equals()".(Óù³îûÿÿÿÿ

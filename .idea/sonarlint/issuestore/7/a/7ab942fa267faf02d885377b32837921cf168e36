@@ -1,0 +1,10 @@
+
+Q
+java:S1948*"/Make "userDetailDao" transient or serializable.(Ϊ—ίϊÿÿÿÿ8ÿÿ¨·0
+T
+java:S1948-"7Make "jwtUserDetailsService" transient or serializable.(θυ™ƒ8€ÿ¨·0
+R
+java:S19480"7Make "authenticationManager" transient or serializable.(’ϋκψÿÿÿÿ
+X	java:S125~"<This block of commented-out lines of code should be removed.(ΐΪΈ­8ξε·0
+@
+java:S5411g"*Use the primitive boolean expression here.(γ‹Ύ½

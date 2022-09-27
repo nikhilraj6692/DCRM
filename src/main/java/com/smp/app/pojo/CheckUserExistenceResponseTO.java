@@ -1,6 +1,6 @@
 package com.smp.app.pojo;
 
-public class ChechUserExistenceResponseTO {
+public class CheckUserExistenceResponseTO {
 
     private Boolean isUserExisted;
     private String serviceMessage;

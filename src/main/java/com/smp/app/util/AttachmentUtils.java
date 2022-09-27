@@ -44,9 +44,9 @@ public class AttachmentUtils {
             if (!fileToDir.exists()) {
                 fileToDir.mkdirs();
             }
-            File fileToCreate = new File(filePath,
+            File fileToCreate = new File(fileToDir,
                 StringUtils.hasText(fileUploadFileName) ? fileUploadFileName : fileObject.getOriginalFilename());
-            FileUtils.copyFile(this.convertMultipartToFile(fileObject), fileToCreate);
+            FileUtils.copyInputStreamToFile(fileObject.getInputStream(), fileToCreate);
         } catch (Exception e) {
             log.error("Error while upload image " + e.getMessage());
             return false;
@@ -61,9 +61,9 @@ public class AttachmentUtils {
             if (!fileToDir.exists()) {
                 fileToDir.mkdirs();
             }
-            File fileToCreate = new File(filePath,
+            File fileToCreate = new File(fileToDir,
                 StringUtils.hasText(fileUploadFileName) ? fileUploadFileName : fileObject.getName());
-            FileUtils.copyFile(fileObject, fileToCreate);
+            fileToCreate.createNewFile();
         } catch (Exception e) {
             log.error("Error while upload image " + e.getMessage());
             return false;
@@ -74,10 +74,10 @@ public class AttachmentUtils {
 
     private File convertMultipartToFile(MultipartFile file) throws IOException {
         File convFile = new File(file.getOriginalFilename());
-        convFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(convFile);
+        //convFile.createNewFile();
+        /*FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
-        fos.close();
+        fos.close();*/
         return convFile;
     }
 

@@ -1,0 +1,62 @@
+
+w
+java:S1450/"bRemove the "dynamicTitleVersion" field and declare it as a local variable in the relevant methods.(İb
+J
+java:S11728"/Remove this unused method parameter "response".(³Ç©ıÿÿÿÿ
+V	java:S125B"<This block of commented-out lines of code should be removed.(£ù¢ıÿÿÿÿ
+Q	java:S125H"<This block of commented-out lines of code should be removed.(ûì«
+
+java:S1172b"uRemove these unused method parameters "commonUtils", "imageUpload", "conformityLevelMapObj", "circularNameMapObject".(¾ŞÓ‘şÿÿÿÿ
+Q	java:S125f"<This block of commented-out lines of code should be removed.( ÷š
+Q	java:S125l"<This block of commented-out lines of code should be removed.(˜şÅ×
+W	java:S125’"<This block of commented-out lines of code should be removed.(ò½õŠÿÿÿÿÿ
+ 
+java:S1172Ç"ˆRemove these unused method parameters "projectRuleList", "commonUtils", "imageUpload", "conformityLevelMapObj", "circularNameMapObject".(Í˜„å
+R	java:S125×"<This block of commented-out lines of code should be removed.(ªæ©±
+i
+java:S3776÷"RRefactor this method to reduce its Cognitive Complexity from 71 to the 15 allowed.(¥‡šù
+I
+java:S1172ù"2Remove this unused method parameter "commonUtils".(ü¬úÀ
+W	java:S125‡"<This block of commented-out lines of code should be removed.(Ú®¼µşÿÿÿÿ
+R	java:S125"<This block of commented-out lines of code should be removed.(…ÈóŸ
+W	java:S125 "<This block of commented-out lines of code should be removed.(äğ€¿úÿÿÿÿ
+R	java:S125¬"<This block of commented-out lines of code should be removed.(•ç¨€
+R	java:S125Ä"<This block of commented-out lines of code should be removed.(°…”§
+R	java:S125"<This block of commented-out lines of code should be removed.(ê»’¥
+W	java:S125Š"<This block of commented-out lines of code should be removed.(ØÅ¹şÿÿÿÿ
+R	java:S125"<This block of commented-out lines of code should be removed.(÷½“û
+=	java:S131é""Add a default case to this switch.(”«ãåşÿÿÿÿ
+@
+java:S2140 ")Use "java.util.Random.nextInt()" instead.(ÖáÜ¤
+M
+java:S1874¬"6Remove this use of "createGraphics"; it is deprecated.(†«è¾
+P
+java:S2864¿"4Iterate over the "entrySet" instead of the "keySet".(Éÿ§õÿÿÿÿÿ
+W	java:S125Ê"<This block of commented-out lines of code should be removed.(ƒı¦Àúÿÿÿÿ
+R	java:S125Ï"<This block of commented-out lines of code should be removed.(Ë¥ãœ
+W	java:S125á"<This block of commented-out lines of code should be removed.(ß»™Öùÿÿÿÿ
+R	java:S125ã"<This block of commented-out lines of code should be removed.(üéÜ
+^
+java:S5361ö"HReplace this call to "replaceAll()" by a call to the "replace()" method.(§ıÛ#
+^
+java:S5361ö"HReplace this call to "replaceAll()" by a call to the "replace()" method.(§ıÛ#
+^
+java:S5361ö"HReplace this call to "replaceAll()" by a call to the "replace()" method.(§ıÛ#
+Q	java:S125ş"<This block of commented-out lines of code should be removed.(€Øúj
+t
+java:S22930"YReplace the type specification in this constructor call with the diamond operator ("<>").(ƒÂüÿÿÿÿ
+t
+java:S22931"YReplace the type specification in this constructor call with the diamond operator ("<>").(½÷¯Æüÿÿÿÿ
+b
+java:S1192×"KDefine a constant instead of duplicating this literal "Conformity" 5 times.(Îšûÿ
+f
+java:S1192Û"ODefine a constant instead of duplicating this literal "Non-Conformity" 3 times.(ãÊû
+V	java:S1078"<Method has 8 parameters, which is greater than 7 authorized.(³Ç©ıÿÿÿÿ
+V	java:S107a"<Method has 8 parameters, which is greater than 7 authorized.(ë·Üºøÿÿÿÿ
+R	java:S107÷"<Method has 8 parameters, which is greater than 7 authorized.(¥‡šù
+U
+java:S1155ü">Use isEmpty() to check whether the collection is empty or not.(Şï„ù
+8
+java:S1643³"Use a StringBuilder instead.(òß¢­úÿÿÿÿ
+{
+java:S1488˜"dImmediately return this expression instead of assigning it to the temporary variable "targetObject".(›Åáˆ

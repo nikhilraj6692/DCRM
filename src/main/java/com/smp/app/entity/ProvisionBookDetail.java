@@ -28,7 +28,7 @@ public class ProvisionBookDetail implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     public Integer getBookId() {
         return bookId;

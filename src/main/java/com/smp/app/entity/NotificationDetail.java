@@ -27,7 +27,7 @@ public class NotificationDetail implements Serializable {
     private ProjectDetail projectDetail;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     public Integer getNotifyId() {
         return notifyId;

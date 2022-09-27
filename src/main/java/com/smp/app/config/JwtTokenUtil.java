@@ -1,6 +1,7 @@
 package com.smp.app.config;
 
 import com.smp.app.dao.UserDetailDao;
+import com.smp.app.entity.UserDetail;
 import com.smp.app.pojo.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -121,17 +123,15 @@ public class JwtTokenUtil implements Serializable {
         return (emailId.equals(emailFromClaims) && !isTokenExpired(token));
     }
 
-    public void removeToken(String authToken, HttpServletRequest request, HttpServletResponse response) {
-        // validate token and remove it, if it is validated
-        /*UserDetails userDetails = userDetailDao.getUserBasedEmail();
-        if (user != null) {
-            user.setAuthToken(null);
-            user.setRefreshToken(null);
-            userRepository.save(user);
+    public void removeToken(UserDetail userDetail, HttpServletRequest request, HttpServletResponse response) {
+        if (userDetail != null) {
+            userDetail.setToken(null);
+            userDetail.setRefreshToken(null);
+            userDetailDao.saveOrUpdate(userDetail);
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if (auth != null) {
                 new SecurityContextLogoutHandler().logout(request, response, auth);
             }
-        }*/
+        }
     }
 }

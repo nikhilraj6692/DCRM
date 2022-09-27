@@ -30,7 +30,7 @@ public class CompanyDetail implements Serializable {
     private List<ProjectDetail> projectList = new ArrayList<ProjectDetail>();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     public Integer getCompanyId() {
         return companyId;

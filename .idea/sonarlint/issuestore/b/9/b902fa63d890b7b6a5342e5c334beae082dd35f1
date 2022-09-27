@@ -1,0 +1,15 @@
+
+^
+java:S4488""HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ó»…•
+c
+java:S4488("HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ŒÜ§žûÿÿÿÿ
+c
+java:S4488."HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ßú¨­ûÿÿÿÿ
+e
+java:S44884"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(æ”ôÀúÿÿÿÿ
+^
+java:S4488;"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(·è¢ß
+^
+java:S4488A"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ÛîòÍ
+c
+java:S4488G"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(¯¿™Ëùÿÿÿÿ

@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,7 +32,7 @@ public class UserDetail {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     public Integer getUserId() {
         return userId;
@@ -77,7 +79,7 @@ public class UserDetail {
         this.userRule = userRule;
     }
 
-    @OneToMany(mappedBy = "managementDetail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "managementDetail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<ProjectDetail> getProjectList() {
         return projectList;
     }

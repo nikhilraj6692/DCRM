@@ -42,7 +42,7 @@ public class ProjectRuleDetail implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     public Integer getRuleId() {
         return ruleId;

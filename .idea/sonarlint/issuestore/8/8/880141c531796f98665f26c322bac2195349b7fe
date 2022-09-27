@@ -1,0 +1,181 @@
+
+E
+java:S37403"/Provide the parametrized type for this generic.(ÅÜ­§
+J
+java:S3740K"/Provide the parametrized type for this generic.(¬œ‘âşÿÿÿÿ
+E
+java:S3740t"/Provide the parametrized type for this generic.(›ÅÓ
+F
+java:S3740…"/Provide the parametrized type for this generic.(áÅğ¬
+F
+java:S3740›"/Provide the parametrized type for this generic.(ëîµ†
+F
+java:S3740´"/Provide the parametrized type for this generic.(áÅğ¬
+F
+java:S3740Ñ"/Provide the parametrized type for this generic.(áÅğ¬
+F
+java:S3740å"/Provide the parametrized type for this generic.(´ÛÙ™
+K
+java:S3740ğ"/Provide the parametrized type for this generic.(£ñıÀşÿÿÿÿ
+K
+java:S3740‰"/Provide the parametrized type for this generic.(ğœ˜úøÿÿÿÿ
+K
+java:S3740¯"/Provide the parametrized type for this generic.(ğœ˜úøÿÿÿÿ
+K
+java:S3740×"/Provide the parametrized type for this generic.(ğœ˜úøÿÿÿÿ
+F
+java:S3740î"/Provide the parametrized type for this generic.(ëîµ†
+F
+java:S3740ù"/Provide the parametrized type for this generic.(É°±
+K
+java:S3740ˆ"/Provide the parametrized type for this generic.(Û»Îùùÿÿÿÿ
+F
+java:S3740˜"/Provide the parametrized type for this generic.(ıö“Ï
+K
+java:S3740«"/Provide the parametrized type for this generic.(¬œ‘âşÿÿÿÿ
+K
+java:S3740»"/Provide the parametrized type for this generic.(¬œ‘âşÿÿÿÿ
+F
+java:S3740Ì"/Provide the parametrized type for this generic.(ºÊÇó
+F
+java:S3740İ"/Provide the parametrized type for this generic.(ëîµ†
+C
+java:S18743"-Remove this use of "Query"; it is deprecated.(ÅÜ­§
+W
+java:S18744"<Remove this use of "setResultTransformer"; it is deprecated.(½Çêªÿÿÿÿÿ
+H
+java:S1874K"-Remove this use of "Query"; it is deprecated.(¬œ‘âşÿÿÿÿ
+W
+java:S1874R"<Remove this use of "setResultTransformer"; it is deprecated.(¥¤ûÊşÿÿÿÿ
+C
+java:S1874t"-Remove this use of "Query"; it is deprecated.(›ÅÓ
+R
+java:S1874u"<Remove this use of "setResultTransformer"; it is deprecated.(è‚ˆÃ
+D
+java:S1874…"-Remove this use of "Query"; it is deprecated.(áÅğ¬
+D
+java:S1874›"-Remove this use of "Query"; it is deprecated.(ëîµ†
+D
+java:S1874´"-Remove this use of "Query"; it is deprecated.(áÅğ¬
+D
+java:S1874Ñ"-Remove this use of "Query"; it is deprecated.(áÅğ¬
+D
+java:S1874å"-Remove this use of "Query"; it is deprecated.(´ÛÙ™
+X
+java:S1874æ"<Remove this use of "setResultTransformer"; it is deprecated.(…–ù†øÿÿÿÿ
+I
+java:S1874ğ"-Remove this use of "Query"; it is deprecated.(£ñıÀşÿÿÿÿ
+X
+java:S1874ñ"<Remove this use of "setResultTransformer"; it is deprecated.(ÍÙ­áúÿÿÿÿ
+I
+java:S1874‰"-Remove this use of "Query"; it is deprecated.(ğœ˜úøÿÿÿÿ
+X
+java:S1874Š"<Remove this use of "setResultTransformer"; it is deprecated.(›Şü¸øÿÿÿÿ
+I
+java:S1874¯"-Remove this use of "Query"; it is deprecated.(ğœ˜úøÿÿÿÿ
+S
+java:S1874°"<Remove this use of "setResultTransformer"; it is deprecated.(Ğˆ‹±
+I
+java:S1874×"-Remove this use of "Query"; it is deprecated.(ğœ˜úøÿÿÿÿ
+S
+java:S1874Ù"<Remove this use of "setResultTransformer"; it is deprecated.(Ğˆ‹±
+D
+java:S1874î"-Remove this use of "Query"; it is deprecated.(ëîµ†
+D
+java:S1874ù"-Remove this use of "Query"; it is deprecated.(É°±
+X
+java:S1874ú"<Remove this use of "setResultTransformer"; it is deprecated.(™ç°Æûÿÿÿÿ
+I
+java:S1874ˆ"-Remove this use of "Query"; it is deprecated.(Û»Îùùÿÿÿÿ
+X
+java:S1874‰"<Remove this use of "setResultTransformer"; it is deprecated.(¢ÚĞÍÿÿÿÿÿ
+D
+java:S1874˜"-Remove this use of "Query"; it is deprecated.(ıö“Ï
+X
+java:S1874™"<Remove this use of "setResultTransformer"; it is deprecated.(…åŞÏøÿÿÿÿ
+I
+java:S1874«"-Remove this use of "Query"; it is deprecated.(¬œ‘âşÿÿÿÿ
+X
+java:S1874®"<Remove this use of "setResultTransformer"; it is deprecated.(¥¤ûÊşÿÿÿÿ
+I
+java:S1874»"-Remove this use of "Query"; it is deprecated.(¬œ‘âşÿÿÿÿ
+D
+java:S1874Ì"-Remove this use of "Query"; it is deprecated.(ºÊÇó
+X
+java:S1874Í"<Remove this use of "setResultTransformer"; it is deprecated.(¥Òä—ûÿÿÿÿ
+D
+java:S1874İ"-Remove this use of "Query"; it is deprecated.(ëîµ†
+€
+java:S1192™"dDefine a constant instead of duplicating this literal "where projectDetail.id =:projectId " 5 times.(¯ÿåûÿÿÿÿ
+˜
+java:S1192ú"|Define a constant instead of duplicating this literal "bookDetail.id as bookId, bookDetail.book_name as bookName, " 3 times.(ğÎµºùÿÿÿÿ
+¸
+java:S1192"¡Define a constant instead of duplicating this literal "inner join employee_review_comment as reviewComment on reviewComment.project_rule_relation_id = " 3 times.(Ò­Û
+…
+java:S1192~"oDefine a constant instead of duplicating this literal "from project_and_rule_relation as subQueryRel " 3 times.(Ç€Ü‚
+
+java:S1192f"tDefine a constant instead of duplicating this literal "empComment.management_remark as managementComment, " 4 times.(×®şüÿÿÿÿÿ
+y
+java:S1192"cDefine a constant instead of duplicating this literal "from project_detail as projDetail " 3 times.(á‰şÜ
+
+java:S1192*"uDefine a constant instead of duplicating this literal "ruleDetail.rule_responsibilty as ruleResponsibilty, " 5 times.(«¾ üûÿÿÿÿ
+¯
+java:S1192g"˜Define a constant instead of duplicating this literal "DATE_FORMAT(empComment.manager_remarked_date, '%b %d, %Y') as managementCommentedDate, " 3 times.(ö²Íƒ
+v
+java:S1192~"`Define a constant instead of duplicating this literal "select count(*) as commentCnt, " 3 times.(Ç€Ü‚
+c
+java:S1192‚"MDefine a constant instead of duplicating this literal "relation.id " 3 times.(®´äA
+Š
+java:S1192î"nDefine a constant instead of duplicating this literal "select projectDetail.projectId as projectId, " 3 times.(Ó›“Õûÿÿÿÿ
+À
+java:S1192."¤Define a constant instead of duplicating this literal "inner join project_and_rule_relation as ruleRelation on ruleRelation.project_id = projectDetail.id " 8 times.(¸ôş·ıÿÿÿÿ
+Œ
+java:S1192*"qDefine a constant instead of duplicating this literal "ruleDetail.rule_description as ruleDescription, " 5 times.(«¾ üûÿÿÿÿ
+­
+java:S1192k"–Define a constant instead of duplicating this literal "DATE_FORMAT(empComment.reviewer_remarked_date, '%b %d, %Y') as reviewerRemarkedDate, " 3 times.(Â›ğ“
+¶
+java:S1192/"ŸDefine a constant instead of duplicating this literal "inner join  project_rule_detail as ruleDetail on ruleDetail.id = ruleRelation.project_rule_id " 7 times.(£Äì²
+
+java:S1192ÿ"eDefine a constant instead of duplicating this literal "empComment.id as employeeCommentId, " 3 times.(³ØËæıÿÿÿÿ
+”
+java:S1192D"yDefine a constant instead of duplicating this literal "inner join projectDetail.companyDetail as companyDetail " 3 times.(ÃÒ•Øùÿÿÿÿ
+±
+java:S1192€"™Define a constant instead of duplicating this literal "inner join project_and_rule_relation as relation on relation.project_id = projDetail.id " 3 times.(î¦ı÷
+Š
+java:S1192j"oDefine a constant instead of duplicating this literal "empComment.reviewer_remark as reviewerRemark, " 3 times.(¦¡½üüÿÿÿÿ
+v
+java:S1192"`Define a constant instead of duplicating this literal "where subQueryRel.project_id = " 3 times.(á‰şÜ
+s
+java:S1192ƒ"WDefine a constant instead of duplicating this literal "where projDetail.id = " 3 times.(ã÷²Îøÿÿÿÿ
+®
+java:S1192'"’Define a constant instead of duplicating this literal "Select projectDetail.id as projectId, projectDetail.project_name as projectName, " 4 times.(ì„Ğ øÿÿÿÿ
+`
+java:S1192t"JDefine a constant instead of duplicating this literal "projectId" 8 times.(›ÅÓ
+{
+java:S1192C"eDefine a constant instead of duplicating this literal "from ProjectDetail as projectDetail " 7 times.(•‡Üî
+h
+java:S1192~"RDefine a constant instead of duplicating this literal "(select count(*) " 3 times.(Ç€Ü‚
+|
+java:S1192-"fDefine a constant instead of duplicating this literal "from project_detail as projectDetail " 6 times.(š½‰ƒ
+¾
+java:S1192…"¡Define a constant instead of duplicating this literal "inner join  provision_book_detail as bookDetail on bookDetail.id = ruleDetail.provision_book_id " 3 times.(Õ¶²ıüÿÿÿÿ
+Ç
+java:S11920"«Define a constant instead of duplicating this literal "left join  employee_review_comment as empComment on empComment.project_rule_relation_id = ruleRelation.id " 5 times.(‡Í–Ôşÿÿÿÿ
+i
+java:S1192M"NDefine a constant instead of duplicating this literal "projectStatus" 3 times.(ª‘µûÿÿÿÿ
+“
+java:S1192l"xDefine a constant instead of duplicating this literal "empComment.lead_reviewer_remark as leadReviewerRemark, " 3 times.(ÌÃ ìüÿÿÿÿ
+
+java:S1192`"tDefine a constant instead of duplicating this literal "ruleDetail.rule_subclause_num as ruleSubclauseNum, " 4 times.(Î‰«ôşÿÿÿÿ
+†
+java:S1192î"jDefine a constant instead of duplicating this literal "projectDetail.projectName as projectName " 3 times.(Ó›“Õûÿÿÿÿ
+™
+java:S1192_"~Define a constant instead of duplicating this literal "ruleDetail.id as ruleId, ruleDetail.rule_title as ruleTitle, " 4 times.(åÒÜÒùÿÿÿÿ
+a
+java:S1155‹">Use isEmpty() to check whether the collection is empty or not.(Ø©ôêıÿÿÿÿ8€Ì“À·0
+x
+java:S14885"bImmediately return this expression instead of assigning it to the temporary variable "resultList".(ºâòÚ
+}
+java:S1488T"bImmediately return this expression instead of assigning it to the temporary variable "resultList".(‘Ô¼§ıÿÿÿÿ
+~
+java:S1488°"bImmediately return this expression instead of assigning it to the temporary variable "resultList".(‘Ô¼§ıÿÿÿÿ

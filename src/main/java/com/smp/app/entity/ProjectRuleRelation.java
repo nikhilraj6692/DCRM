@@ -27,7 +27,7 @@ public class ProjectRuleRelation {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     public Integer getRelationId() {
         return relationId;

@@ -1,9 +1,19 @@
 package com.smp.app.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.smp.app.util.EmailConstraintValidator;
+import com.smp.app.util.SMPAppConstants;
+import javax.validation.constraints.NotBlank;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class UserLoginInputTO {
 
     private Integer loginUserType;
     private String username;
+    @EmailConstraintValidator(message = SMPAppConstants.INVALID_EMAIL_ID)
     private String userEmailId;
     private String password;
 

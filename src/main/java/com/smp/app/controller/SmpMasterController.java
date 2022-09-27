@@ -4,10 +4,10 @@ import com.itextpdf.text.DocumentException;
 import com.smp.app.config.AuthorizationProcessor;
 import com.smp.app.config.PublicApi;
 import com.smp.app.entity.ProjectDetail;
+import com.smp.app.exception.InvalidInputException;
 import com.smp.app.pojo.BaseResponse;
 import com.smp.app.pojo.BasicResponseTO;
 import com.smp.app.pojo.BookListResponseTO;
-import com.smp.app.pojo.ChechUserExistenceResponseTO;
 import com.smp.app.pojo.CompletedProjectListResponseTo;
 import com.smp.app.pojo.DeleteAttachmentInputTO;
 import com.smp.app.pojo.DeleteImgResponseTO;
@@ -23,31 +23,42 @@ import com.smp.app.pojo.ProjectReviewerResponseTO;
 import com.smp.app.pojo.ProjectStatusInputTO;
 import com.smp.app.pojo.ReviewerPreviewDetailsResponseTO;
 import com.smp.app.pojo.RuleListResponseTO;
+import com.smp.app.pojo.SaveProjectInputTO;
+import com.smp.app.pojo.SaveRuleInputTO;
 import com.smp.app.pojo.TokenDetailInputTO;
+import com.smp.app.pojo.TokenRequest;
+import com.smp.app.pojo.TokenResponse;
 import com.smp.app.pojo.UpdateProjectRuleInputTO;
 import com.smp.app.pojo.UserLoginInputTO;
+import com.smp.app.pojo.UserLoginType;
 import com.smp.app.service.ReviewerService;
 import com.smp.app.service.SMPService;
 import com.smp.app.util.CommonUtils;
 import com.smp.app.util.ImageUpload;
 import com.smp.app.util.PDFGenerator;
+import com.smp.app.util.SMPAppConstants;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
@@ -73,19 +84,68 @@ public class SmpMasterController {
     @PublicApi
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes =
         MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse login(@RequestBody UserLoginInputTO loginDetail) {
+    public BaseResponse login(@Valid @RequestBody UserLoginInputTO loginDetail) {
+        if (StringUtils.isBlank(loginDetail.getPassword())) {
+            throw new InvalidInputException(SMPAppConstants.INVALID_PASSWORD);
+        }
+        if (StringUtils.isBlank(loginDetail.getUsername())) {
+            throw new InvalidInputException(SMPAppConstants.INVALID_USER_NAME);
+        }
+        if (Arrays.stream(UserLoginType.values())
+            .noneMatch(userLoginType -> userLoginType.getRoleId() == loginDetail.getLoginUserType())) {
+            throw new InvalidInputException(SMPAppConstants.INVALID_USER_TYPE);
+        }
+
         authorizationProcessor.authorizeRequest(loginDetail.getUserEmailId());
         return this.smpService.login(loginDetail);
     }
 
-    @RequestMapping(value = "/saveRuleDetail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
-        consumes = MediaType.APPLICATION_JSON_VALUE)
-    public BasicResponseTO saveRuleDetail(@RequestBody String ruleDetailStr) {
-        return this.smpService.saveRuleDetail(ruleDetailStr);
+    @PostMapping("/userLogout")
+    public BasicResponseTO logout(HttpServletRequest request, RedirectAttributes redirectAttributes,
+        HttpServletResponse response) {
+        this.smpService.logOut(request, response);
+        return new BasicResponseTO(SMPAppConstants.LOG_OUT_SUCCESSFUL);
+    }
+
+    @PostMapping("/silent-renewal")
+    public BaseResponse renewToken(@Valid @RequestBody TokenRequest tokenRequest) {
+        TokenResponse tokenResponse = smpService.renewToken(tokenRequest);
+        return new BaseResponse(tokenResponse, new BasicResponseTO(SMPAppConstants.RENEWAL_SUCCESSFUL));
+    }
+
+    @RequestMapping(value = "/checkUserExistence", method = RequestMethod.POST, consumes =
+        MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public boolean checkUserExistence(@Valid @RequestBody UserLoginInputTO loginDetail) {
+        return this.smpService.checkUserExistence(loginDetail.getUserEmailId());
+    }
+
+    @RequestMapping(value = "/getBookList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse getBookList() {
+        List<BookListResponseTO> bookListResponseTOS = this.smpService.getBookList();
+        if (null == bookListResponseTOS) {
+            bookListResponseTOS = new ArrayList<>();
+        }
+
+        return new BaseResponse(bookListResponseTOS, new BasicResponseTO(SMPAppConstants.BOOKS_RETRIEVED_SUCCESSFULLY));
     }
 
 
-    @RequestMapping(value = "/xyzz", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+
+    @RequestMapping(value = "/getRuleList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse getRuleList(@RequestParam(name = "bookId", required = false) Integer bookId) {
+        Map<String, List<RuleListResponseTO>> rulesMap = this.smpService.getRuleList(bookId);
+        return new BaseResponse(rulesMap, new BasicResponseTO(SMPAppConstants.RULES_FETCHED_SUCCESSFULLY));
+    }
+
+    @RequestMapping(value = "/saveRuleDetail", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse saveRuleDetail(@Valid @RequestBody SaveRuleInputTO ruleDetail) {
+        return new BaseResponse(this.smpService.saveRuleDetail(ruleDetail).toMap(),
+            new BasicResponseTO(SMPAppConstants.SAVE_RULE_SUCCESSFUL));
+    }
+
+
+    /*@RequestMapping(value = "/xyzz", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public BasicResponseTO saveRuleDetail(@RequestParam("attachmentUploadedStatus") String attchMentStatus,
         @RequestParam("projRuleDetail") String ruleDetailStr, RedirectAttributes redirectAttributes,
@@ -97,14 +157,21 @@ public class SmpMasterController {
         }
         //	return this.smpService.saveRuleDetail(ruleDetailStr, circularAttachFile);
         return null;
-    }
+    }*/
 
 
     @RequestMapping(value = "/saveProjectDetail", method = RequestMethod.POST, consumes =
         MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BasicResponseTO saveProjectDetail(@RequestParam("upload-file") MultipartFile file,
-        @RequestParam("projectDetail") String projectDetail, RedirectAttributes redirectAttributes) {
-        return this.smpService.saveProjectDetail(file, projectDetail);
+    public BaseResponse saveProjectDetail(@RequestPart("file") MultipartFile file,
+        @RequestPart("projectInfo") SaveProjectInputTO projectInfo, RedirectAttributes redirectAttributes) {
+        return new BaseResponse(this.smpService.saveProjectDetail(file, projectInfo).toMap(),
+            new BasicResponseTO(SMPAppConstants.PROJECT_SAVED_SUCCESSFUL));
+    }
+
+    @RequestMapping(value = "/getOpenStateProjectList", method = RequestMethod.GET, consumes =
+        MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CompletedProjectListResponseTo> getOpenStateProjectList() {
+        return this.smpService.getOpenStateProjectList();
     }
 
     @RequestMapping(value = "/updateProjectStatus", method = RequestMethod.POST, produces =
@@ -113,22 +180,6 @@ public class SmpMasterController {
         return this.smpService.updateProjectStatus(projectInputTO);
     }
 
-    @RequestMapping(value = "/getRuleList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, List<RuleListResponseTO>> getRuleList() {
-        return this.smpService.getRuleList();
-    }
-
-    @RequestMapping(value = "/userLogout", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BasicResponseTO userLogout(HttpServletRequest httpServletRequest) {
-        BasicResponseTO basicResponseTO = new BasicResponseTO();
-        HttpSession httpSession = httpServletRequest.getSession(true);
-        httpSession.setAttribute("userId", "");
-        httpSession.setAttribute("username", "");
-        httpSession.setAttribute("userEmailId", "");
-        httpSession.setAttribute("userRuleType", "");
-        basicResponseTO.setResponseStatus(true);
-        return basicResponseTO;
-    }
 
     @RequestMapping(value = "/generateProjectReport", method = RequestMethod.POST, consumes =
         MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -155,8 +206,8 @@ public class SmpMasterController {
 
     @RequestMapping(value = "/projectfReportMApp/{projectId}", method = RequestMethod.GET, produces =
         MediaType.APPLICATION_JSON_VALUE)
-    public PdfReportResponseTO generatePdfReport(@PathVariable("projectId") Integer projectId,
-        HttpServletRequest request, HttpServletResponse response) {
+    public PdfReportResponseTO generatePdfReport(@PathVariable("projectId") Integer projectId, HttpServletRequest request,
+        HttpServletResponse response) {
         PdfReportResponseTO pdfReportResponseTO = new PdfReportResponseTO();
         try {
 
@@ -209,16 +260,6 @@ public class SmpMasterController {
         return pdfReportResponseTO;
     }
 
-    @RequestMapping(value = "/chechUserExistence", method = RequestMethod.POST, consumes =
-        MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ChechUserExistenceResponseTO chechUserExistence(@RequestBody UserLoginInputTO loginDetail) {
-        return this.smpService.chechUserExistence(loginDetail.getUserEmailId());
-    }
-
-    @RequestMapping(value = "/getBookList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<BookListResponseTO> getBookList() {
-        return this.smpService.getBookList();
-    }
 
     @RequestMapping(value = "/getProjectAndReviewerList", method = RequestMethod.GET, produces =
         MediaType.APPLICATION_JSON_VALUE)
@@ -250,11 +291,7 @@ public class SmpMasterController {
         return this.smpService.getCompletedProjectList();
     }
 
-    @RequestMapping(value = "/getOpenStateProjectList", method = RequestMethod.GET, consumes =
-        MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CompletedProjectListResponseTo> getOpenStateProjectList() {
-        return this.smpService.getOpenStateProjectList();
-    }
+
 
 
     @RequestMapping(value = "/changeCompProjectStatus/{projectId}", method = RequestMethod.GET, consumes =

@@ -6,3 +6,21 @@ api:
     "[/SMPMasterAction/getBookList]":
       method: GET
       capabilityId: User.BookList_READ
+    "[/SMPMasterAction/saveRuleDetail]":
+      method: POST
+      capabilityId: User.RuleDetail_Write
+    "[/SMPMasterAction/getRuleList]":
+      method: GET
+      capabilityId: User.RuleList_READ
+    "[/SMPMasterAction/checkUserExistence]":
+      method: POST
+      capabilityId: User.CheckUser_READ
+    "[/SMPMasterAction/saveProjectDetail]":
+      method: POST
+      capabilityId: User.SaveProject_WRITE
+    "[/SMPMasterAction/userLogout]":
+      method: POST
+      capabilityId: User.LogOut_WRITE
+    "[/SMPMasterAction/silent-renewal]":
+      method: POST
+      capabilityId: User.SilentRenewal_WRITE

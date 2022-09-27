@@ -1,0 +1,14 @@
+
+R
+java:S2864¯"4Iterate over the "entrySet" instead of the "keySet".(ÌÅğÇ8 Å–À·0
+R	java:S125±"<This block of commented-out lines of code should be removed.(°­…ü
+u
+java:S2293œ"YReplace the type specification in this constructor call with the diamond operator ("<>").(œöúûúÿÿÿÿ
+p
+java:S2293¥"YReplace the type specification in this constructor call with the diamond operator ("<>").(’Âê
+p
+java:S2293È"YReplace the type specification in this constructor call with the diamond operator ("<>").(¢•µ±
+a
+java:S1155¼">Use isEmpty() to check whether the collection is empty or not.(Ø©ôêıÿÿÿÿ8©Å–À·0
+F
+java:S5411„"*Use the primitive boolean expression here.(Üñîåûÿÿÿÿ

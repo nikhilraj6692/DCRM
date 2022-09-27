@@ -1,6 +1,5 @@
 package com.smp.app.service.impl;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.smp.app.config.JwtTokenUtil;
@@ -25,11 +24,13 @@ import com.smp.app.entity.ProvisionBookDetail;
 import com.smp.app.entity.RuleRelevantCircular;
 import com.smp.app.entity.UserDetail;
 import com.smp.app.entity.UserRule;
+import com.smp.app.exception.BusinessException;
+import com.smp.app.exception.InvalidInputException;
+import com.smp.app.exception.NoDataFoundException;
 import com.smp.app.exception.UnAuthorizedException;
 import com.smp.app.pojo.BaseResponse;
 import com.smp.app.pojo.BasicResponseTO;
 import com.smp.app.pojo.BookListResponseTO;
-import com.smp.app.pojo.ChechUserExistenceResponseTO;
 import com.smp.app.pojo.CompletedProjectListResponseTo;
 import com.smp.app.pojo.ConformityLevelResponseTO;
 import com.smp.app.pojo.DeleteAttachmentInputTO;
@@ -37,16 +38,21 @@ import com.smp.app.pojo.DeleteImgResponseTO;
 import com.smp.app.pojo.FileReturnListResponseTO;
 import com.smp.app.pojo.FileReturnNotificationResponseTO;
 import com.smp.app.pojo.FileToReturnSaveInputTO;
-import com.smp.app.pojo.LoginResponseTO;
+import com.smp.app.pojo.ManagementInputTO;
 import com.smp.app.pojo.NotificationDetailResponseTO;
 import com.smp.app.pojo.ProjectListResponseTO;
 import com.smp.app.pojo.ProjectReviewerRelationInputTO;
 import com.smp.app.pojo.ProjectReviewerResponseTO;
 import com.smp.app.pojo.ProjectStatusInputTO;
+import com.smp.app.pojo.RelevantCircularInputTO;
 import com.smp.app.pojo.RuleListResponseTO;
+import com.smp.app.pojo.SaveProjectInputTO;
+import com.smp.app.pojo.SaveRuleInputTO;
 import com.smp.app.pojo.TokenDetailInputTO;
+import com.smp.app.pojo.TokenRequest;
 import com.smp.app.pojo.TokenResponse;
 import com.smp.app.pojo.UpdateProjectRuleInputTO;
+import com.smp.app.pojo.UserContext;
 import com.smp.app.pojo.UserDetailResponseTO;
 import com.smp.app.pojo.UserLoginInputTO;
 import com.smp.app.service.SMPService;
@@ -59,6 +65,7 @@ import com.smp.app.util.ProjectStatusEnum;
 import com.smp.app.util.SMPAppConstants;
 import com.smp.app.util.UserRuleEnum;
 import com.smp.app.util.VerificationCodeMail;
+import io.jsonwebtoken.JwtException;
 import java.io.File;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -71,7 +78,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Hibernate;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +94,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
@@ -133,6 +145,9 @@ public class SMPServiceImpl implements SMPService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserContext userContext;
+
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     public BaseResponse login(UserLoginInputTO loginDetail) {
@@ -155,71 +170,75 @@ public class SMPServiceImpl implements SMPService {
     }
 
     @Override
-    //@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
-    public BasicResponseTO saveRuleDetail(String ruleDetailStr) {
-        BasicResponseTO responseTO = new BasicResponseTO();
+    public void logOut(HttpServletRequest request, HttpServletResponse response) {
+        UserDetail loggedUser = getLoggedInUser();
+        jwtTokenUtil.removeToken(loggedUser, request, response);
+    }
 
-        try {
-			
-			/*ProjectRuleDetail ruleDetail = new ProjectRuleDetail();
-			ruleDetail.setRuleSubclauseNum(ruleInputTO.getRuleSubclauseNum());
-			ruleDetail.setRuleTitle(ruleInputTO.getRuleTitle());
-			ruleDetail.setRuleResponsibilty(ruleInputTO.getRuleResponsibilty());
-			ruleDetail.setRuleDescription(ruleInputTO.getRuleDescription());
-			ruleDetail.setRuleRelevantCircular(ruleInputTO.getRuleRelevantCircular());
-			ruleDetail.setCreatedDate(new Date());
-			ruleDetail.setProvisionBookDetail(this.provisionBookDao.read(ruleInputTO.getProvisionBookId()));
-			this.projectRuleDao.saveOrUpdate(ruleDetail);*/
+    @Override
+    public TokenResponse renewToken(TokenRequest token) {
+        UserDetail user = userDetailDao.findByRefreshToken(userContext.getUserEmailId(), token.getRefreshToken());
 
-            JsonObject ruleDetailJsonObj = new JsonParser().parse(ruleDetailStr).getAsJsonObject();
-
-            ProjectRuleDetail ruleDetail = new ProjectRuleDetail();
-            ruleDetail.setRuleSubclauseNum(ruleDetailJsonObj.get("ruleSubclauseNum").getAsString());
-            ruleDetail.setRuleTitle(ruleDetailJsonObj.get("ruleTitle").getAsString());
-            ruleDetail.setRuleResponsibilty(ruleDetailJsonObj.get("ruleResponsibilty").getAsString());
-            ruleDetail.setRuleDescription(ruleDetailJsonObj.get("ruleDescription").getAsString());
-            ruleDetail.setCreatedDate(new Date());
-            ruleDetail.setProvisionBookDetail(
-                this.provisionBookDao.read(ruleDetailJsonObj.get("provisionBookId").getAsInt()));
-
-            List<RuleRelevantCircular> relevantCircularList = new ArrayList<RuleRelevantCircular>();
-            JsonArray circularJsonArr = ruleDetailJsonObj.get("ruleRelevantCircularList").getAsJsonArray();
-            for (int i = 0; i < circularJsonArr.size(); i++) {
-                JsonObject circularJsonObj = circularJsonArr.get(i).getAsJsonObject();
-                RuleRelevantCircular relevantCircular = new RuleRelevantCircular();
-                relevantCircular.setCircularName(circularJsonObj.get("ruleRelevantCircularName").getAsString());
-                relevantCircular.setCircularDescription(circularJsonObj.get("ruleRelevantCircularDescr").getAsString());
-                relevantCircular.setProjectRuleDetail(ruleDetail);
-                relevantCircularList.add(relevantCircular);
+        if (null != user) {
+            try {
+                //check if auth token is expired. if not expired then renewal should not happen
+                if (jwtTokenUtil.validateToken(user.getToken(), user.getUserEmailId())) {
+                    throw new BusinessException(SMPAppConstants.AUTH_TOKEN_VALID);
+                }
+            } catch (JwtException | IllegalArgumentException e) {
+                //if token is expired then it will throw jwt exception, so catching it and bypassing it...do nothing
             }
-            ruleDetail.setRelevantCircularList(relevantCircularList);
-			/*if(file != null) {
-				String orgFileName = file.getOriginalFilename();
-				String fileUploadFileName = orgFileName.replaceAll("\\s", "");
-				ruleDetail.setCircularAttachmentName(fileUploadFileName);
-			}*/
-            this.projectRuleDao.saveOrUpdate(ruleDetail);
-			
-			
-			/*if(file != null) {// For local commented this code
-				String orgFileName = file.getOriginalFilename();
-				String fileUploadFileName = ruleDetail.getRuleId()+"_"+orgFileName.replaceAll("\\s", "");
-				awsImageUpload.uploadCircularAttachment(file, fileUploadFileName);
-			}*/
 
-            responseTO.setResponseStatus(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_SUCCESS_STATUS)));
-            responseTO.setResponseMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.SAVE_PROJECT_RULE_SUCCESS_MSG));
-        } catch (Exception e) {
-            responseTO.setResponseStatus(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_FAILURE_STATUS)));
-            responseTO.setResponseMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.SAVE_PROJECT_RULE_FAILURE_MSG));
-            LOGGER.error(e.toString());
-            e.printStackTrace();
+            try {
+                TokenResponse response = jwtTokenUtil.generateToken(user.getUserEmailId(), token.getRefreshToken());
+                user.setToken(response.getToken());
+                user.setRefreshToken(response.getRefreshToken());
+                userDetailDao.saveOrUpdate(user);
+
+                return response;
+            } catch (JwtException | IllegalArgumentException e) {
+                LOGGER.error("JWT exception", e.getMessage());
+                throw new UnAuthorizedException(SMPAppConstants.INVALID_REFRESH_TOKEN);
+            }
+        } else {
+            LOGGER.error("Invalid refresh token");
+            throw new UnAuthorizedException(SMPAppConstants.INVALID_REFRESH_TOKEN);
         }
-        return responseTO;
+
+    }
+
+    @Override
+    //@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
+    public JSONObject saveRuleDetail(SaveRuleInputTO ruleInputTO) {
+        ProjectRuleDetail ruleDetail = new ProjectRuleDetail();
+        ruleDetail.setRuleSubclauseNum(ruleInputTO.getRuleSubclauseNum());
+        ruleDetail.setRuleTitle(ruleInputTO.getRuleTitle());
+        ruleDetail.setRuleResponsibilty(ruleInputTO.getRuleResponsibilty());
+        ruleDetail.setRuleDescription(ruleInputTO.getRuleDescription());
+        ruleDetail.setCreatedDate(new Date());
+
+        ProvisionBookDetail provisionBookDetail = this.provisionBookDao.read(ruleInputTO.getProvisionBookId());
+        if(null == provisionBookDetail){
+            throw new NoDataFoundException(SMPAppConstants.INVALID_PROVISION_BOOK_ID);
+        }
+        ruleDetail.setProvisionBookDetail(provisionBookDetail);
+
+        List<RuleRelevantCircular> relevantCircularList = new ArrayList<RuleRelevantCircular>();
+        for (RelevantCircularInputTO relevantCircularInputTO : ruleInputTO.getRuleRelevantCirculars()) {
+            RuleRelevantCircular relevantCircular = new RuleRelevantCircular();
+            relevantCircular.setCircularName(relevantCircularInputTO.getCircularName());
+            relevantCircular.setCircularDescription(relevantCircularInputTO.getCircularDescription());
+            relevantCircular.setProjectRuleDetail(ruleDetail);
+            relevantCircularList.add(relevantCircular);
+        }
+
+        ruleDetail.setRelevantCircularList(relevantCircularList);
+
+        this.projectRuleDao.saveOrUpdate(ruleDetail);
+
+        JSONObject json = new JSONObject();
+        json.put("ruleId", ruleDetail.getRuleId());
+        return json;
     }
 
 
@@ -262,70 +281,77 @@ public class SMPServiceImpl implements SMPService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
-    public BasicResponseTO saveProjectDetail(MultipartFile file, String projectInfo) {
-        BasicResponseTO responseTO = new BasicResponseTO();
-        JsonObject projectDetailJson = new JsonParser().parse(projectInfo).getAsJsonObject();
+    public JSONObject saveProjectDetail(MultipartFile file, SaveProjectInputTO projectInfo) {
+        for(ManagementInputTO managementInputTO : projectInfo.getManagementDetail()){
+            if(checkUserExistence(managementInputTO.getUserEmailId())){
+                throw new BusinessException(SMPAppConstants.USER_ALREADY_EXISTS);
+            }
+        }
 
-        try {
-            CompanyDetail companyDetail = new CompanyDetail();
-            companyDetail.setCompanyName(projectDetailJson.get("companyName").getAsString());
-            companyDetail.setCreatedDate(new Date());
+        CompanyDetail companyDetail = new CompanyDetail();
+        companyDetail.setCompanyName(projectInfo.getCompanyName());
+        companyDetail.setCreatedDate(new Date());
 
-            ProjectDetail projectDetail = new ProjectDetail();
-            projectDetail.setProjectName(projectDetailJson.get("projectName").getAsString());
-            projectDetail.setProjectUniqueId(projectDetailJson.get("projectIdInfo").getAsString());
-            projectDetail.setProjectDescription(projectDetailJson.get("projectDescription").getAsString());
-            projectDetail.setProjectStatus(ProjectStatusEnum.OPEN.getId());
-            projectDetail.setCreatedDate(new Date());
-            projectDetail.setVersionNum(1);// For new proect setting version num as 1.
+        ProjectDetail projectDetail = new ProjectDetail();
+        projectDetail.setProjectName(projectInfo.getProjectName());
+        projectDetail.setProjectUniqueId(projectInfo.getProjectId());
+        projectDetail.setProjectDescription(projectInfo.getProjectDescr());
+        projectDetail.setProjectStatus(ProjectStatusEnum.OPEN.getId());
+        projectDetail.setCreatedDate(new Date());
+        projectDetail.setVersionNum(1);// For new proect setting version num as 1.
 
-            projectDetail.setCompanyDetail(companyDetail);
-            companyDetail.getProjectList().add(projectDetail);
+        projectDetail.setCompanyDetail(companyDetail);
+        companyDetail.getProjectList().add(projectDetail);
+
+        List<UserDetail> userDetails = new ArrayList<>();
+
+        for(ManagementInputTO managementInputTO : projectInfo.getManagementDetail()){
 
             UserDetail userDetail = new UserDetail();
-            userDetail.setUserName(projectDetailJson.get("employeeName").getAsString());
-            userDetail.setUserEmailId(projectDetailJson.get("empEmailId").getAsString());
-            userDetail.setPassword(projectDetailJson.get("empPassword").getAsString());
+            userDetail.setUserName(managementInputTO.getUsername());
+            userDetail.setUserEmailId(managementInputTO.getUserEmailId());
+            userDetail.setPassword(managementInputTO.getPassword());
             userDetail.getProjectList().add(projectDetail);
 
             UserRule userRule = new UserRule();
             userRule.setRuleId(UserRuleEnum.MANAGEMENT.getId());
             userDetail.setUserRule(userRule);
             this.userDetailDao.saveOrUpdate(userDetail);
-
-            projectDetail.setManagementDetail(userDetail);
-            this.companyDao.saveOrUpdate(companyDetail);
-
-            JsonArray ruleIdArray = projectDetailJson.get("ruleListDropDown").getAsJsonArray();
-            for (int i = 0; i < ruleIdArray.size(); i++) {
-                ProjectRuleRelation projectRuleRelation = new ProjectRuleRelation();
-                projectRuleRelation.setProjectDetail(projectDetail);
-                projectRuleRelation.setProjectRuleDetail(
-                    this.projectRuleDao.read(Integer.parseInt(ruleIdArray.get(i).getAsString())));
-                projectRuleRelation.setCreatedDate(new Date());
-                this.projectRuleRelationDao.saveOrUpdate(projectRuleRelation);
-            }
-
-            if (file != null) {// For local commented this code
-                Integer projectId = companyDetail.getProjectList().get(0).getProjectId();
-                String orgFileName = file.getOriginalFilename();
-                String fileUploadFileName = projectId + "_" + orgFileName.replaceAll("\\s", "");
-                imageUpload.uploadProjectImage(file, fileUploadFileName);
-                ProjectDetail dbProject = this.projectDao.read(projectId);
-                dbProject.setProjectLogo(fileUploadFileName);
-            }
-            responseTO.setResponseStatus(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_SUCCESS_STATUS)));
-            responseTO.setResponseMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.SAVE_PROJECT_DETAIL_SUCCESS_MSG));
-        } catch (Exception e) {
-            responseTO.setResponseStatus(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_FAILURE_STATUS)));
-            responseTO.setResponseMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.SAVE_PROJECT_DETAIL_FAILURE_MSG));
-            LOGGER.error(e.toString());
+            userDetails.add(userDetail);
         }
-        return responseTO;
+
+        projectDetail.setManagementDetail(userDetails);
+        this.companyDao.saveOrUpdate(companyDetail);
+
+        List<Integer> selectedRuleIds = projectInfo.getSelectedRuleIds();
+        for (Integer ruleId : selectedRuleIds) {
+            ProjectRuleRelation projectRuleRelation = new ProjectRuleRelation();
+            projectRuleRelation.setProjectDetail(projectDetail);
+
+            ProjectRuleDetail projectRuleDetail = this.projectRuleDao.read(ruleId);
+            if(null == projectRuleDetail){
+                throw new InvalidInputException(SMPAppConstants.INVALID_RULE_ID);
+            }
+
+            projectRuleRelation.setProjectRuleDetail(projectRuleDetail);
+            projectRuleRelation.setCreatedDate(new Date());
+            this.projectRuleRelationDao.saveOrUpdate(projectRuleRelation);
+        }
+
+
+
+        if (file != null) {// For local commented this code
+            Integer projectId = companyDetail.getProjectList().get(0).getProjectId();
+            String orgFileName = file.getOriginalFilename();
+            String fileUploadFileName = projectId + "_" + orgFileName.replaceAll("\\s", "");
+            imageUpload.uploadProjectImage(file, fileUploadFileName);
+            ProjectDetail dbProject = this.projectDao.read(projectId);
+            dbProject.setProjectLogo(fileUploadFileName);
+        }
+
+        JSONObject json = new JSONObject();
+        json.put("projectId", projectDetail.getProjectId());
+        return json;
     }
 
 
@@ -403,9 +429,9 @@ public class SMPServiceImpl implements SMPService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
-    public Map<String, List<RuleListResponseTO>> getRuleList() {
+    public Map<String, List<RuleListResponseTO>> getRuleList(Integer bookId) {
         //return this.projectRuleDao.getRuleList();
-        List<ProvisionBookDetail> bookList = provisionBookDao.getBookList();
+        List<ProvisionBookDetail> bookList = provisionBookDao.getBookList(bookId);
         Map<String, List<RuleListResponseTO>> ruleListDetail = new LinkedHashMap<String, List<RuleListResponseTO>>();
         for (ProvisionBookDetail bookDetail : bookList) {
             List<RuleListResponseTO> ruleResponseList = new ArrayList<RuleListResponseTO>();
@@ -424,21 +450,10 @@ public class SMPServiceImpl implements SMPService {
 
 
     @Override
-    public ChechUserExistenceResponseTO chechUserExistence(String userEmailId) {
-        ChechUserExistenceResponseTO responseTO = new ChechUserExistenceResponseTO();
+    public boolean checkUserExistence(String userEmailId) {
         UserDetail userDetail = this.userDetailDao.getUserBasedEmail(userEmailId);
-        if (userDetail == null) {
-            responseTO.setIsUserExisted(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_FAILURE_STATUS)));
-            responseTO.setServiceMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.CHECK_USER_EXISTENCE_SUCCESS_MSG));
-        } else {
-            responseTO.setIsUserExisted(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_SUCCESS_STATUS)));
-            responseTO.setServiceMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.CHECK_USER_EXISTENCE_FAILURE_MSG));
-        }
-        return responseTO;
+        boolean isUserExist = null!=userDetail?true:false;
+        return isUserExist;
     }
 
 
@@ -890,5 +905,25 @@ public class SMPServiceImpl implements SMPService {
         userDetailResponse.setToken(dbUserDetail.getToken());
         userDetailResponse.setRefreshToken(dbUserDetail.getRefreshToken());
         return userDetailResponse;
+    }
+
+    private UserDetail getLoggedInUser() {
+        UserDetail loggedUser = userDetailDao.getUserBasedEmail(getAuthentication());
+        if (null == loggedUser) {
+            //just a fallback case. loggeduser will get validated in JwtRequestFilter
+            throw new UnAuthorizedException();
+        }
+
+        return loggedUser;
+    }
+
+    private String getAuthentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (StringUtils.hasText(authentication.getName())) {
+                return authentication.getName();
+            }
+        }
+        return null;
     }
 }

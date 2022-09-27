@@ -1,0 +1,7 @@
+
+_
+java:S1874"DRemove this use of "WebSecurityConfigurerAdapter"; it is deprecated.(Ã÷ ´ıÿÿÿÿ
+X
+java:S1874"";Remove this use of "NoOpPasswordEncoder"; it is deprecated.(å‰ö8ç©·0
+
+java:S1128"]Remove this unused import 'org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder'.(åÅÚ…ûÿÿÿÿ8é£è©·0

@@ -4,12 +4,24 @@ user:
       allowedCapabilities:
         - User.SignIn_WRITE
         - User.BookList_READ
+        - User.RuleDetail_Write
+        - User.RuleList_READ
+        - User.CheckUser_READ
+        - User.SaveProject_WRITE
+        - User.LogOut_WRITE
+        - User.SilentRenewal_WRITE
     - roleName: Management
       allowedCapabilities:
         - User.SignIn_WRITE
+        - User.LogOut_WRITE
+        - User.SilentRenewal_WRITE
     - roleName: Reviewer
       allowedCapabilities:
         - User.SignIn_WRITE
+        - User.LogOut_WRITE
+        - User.SilentRenewal_WRITE
     - roleName: Lead Reviewer
       allowedCapabilities:
         - User.SignIn_WRITE
+        - User.LogOut_WRITE
+        - User.SilentRenewal_WRITE

@@ -8,6 +8,8 @@ public interface ProvisionBookDao extends GenericDao<ProvisionBookDetail, Intege
 
     List<ProvisionBookDetail> getBookList();
 
+    List<ProvisionBookDetail> getBookList(Integer bookId);
+
     List<Object[]> getBookListBasedOnManagementId(Integer managementId);
 
     List<Object[]> getBookListBasedOnProjectId(Integer projectId);

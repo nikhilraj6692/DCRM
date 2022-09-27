@@ -51,6 +51,8 @@ public class DatabaseConfig {
         properties.put("hibernate.c3p0.acquire_increment", 5);
         properties.put("hibernate.show_sql", true);
         properties.put("hibernate.format_sql", true);
+        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("dialect","org.hibernate.dialect.MySQL5Dialect");
         return properties;
     }
 }

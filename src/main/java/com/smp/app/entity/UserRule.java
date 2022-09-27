@@ -28,7 +28,7 @@ public class UserRule implements Serializable {
     private List<UserDetail> userList = new ArrayList<UserDetail>();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     public Integer getRuleId() {
         return ruleId;

@@ -25,7 +25,7 @@ public class ImageUpload {
 
             String folderName = commonUtils.readUserDefinedMessages("smp.project_logo.folder_name").trim();
             attachmentUtils.uploadFile(file, folderName, fileUploadFileName);
-            LOGGER.error("Image Uploaded Successfully !!!!!!!!!!");
+            LOGGER.info("Image Uploaded Successfully !!!!!!!!!!");
             return true;
         } catch (Exception e) {
             e.printStackTrace();

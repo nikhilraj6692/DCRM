@@ -1,0 +1,21 @@
+
+e
+java:S4488!"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(“ÛèÀşÿÿÿÿ
+e
+java:S4488'"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Åÿ¨Ğúÿÿÿÿ
+e
+java:S4488."JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ò¸óúüÿÿÿÿ
+^
+java:S44885"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ÔÖÉ“
+e
+java:S4488;"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Çœ¤üÿÿÿÿ
+^
+java:S4488A"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(ã»‡‰
+^
+java:S4488G"HReplace "@RequestMapping(method = RequestMethod.GET)" with "@GetMapping"(–»æè
+e
+java:S4488N"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ü¦æõúÿÿÿÿ
+e
+java:S4488U"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(ç³âšùÿÿÿÿ
+`
+java:S4488^"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(áå‡

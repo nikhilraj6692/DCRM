@@ -1,0 +1,11 @@
+
+E
+java:S3740."/Provide the parametrized type for this generic.(áÅð¬
+C
+java:S1874."-Remove this use of "Query"; it is deprecated.(áÅð¬
+o
+java:S22931"YReplace the type specification in this constructor call with the diamond operator ("<>").(¦ñ‚‘
+
+java:S1192"dDefine a constant instead of duplicating this literal "FROM employee_detail  as empDetail " 3 times.(”éø´ûÿÿÿÿ
+Ž
+java:S1192"sDefine a constant instead of duplicating this literal "SELECT empDetail.id, empDetail.device_token_value " 3 times.(”éø´ûÿÿÿÿ

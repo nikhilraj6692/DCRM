@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,14 +33,14 @@ public class ProjectDetail implements Serializable {
     private Integer versionNum;
     private Date projectSubmittedDate;
     private CompanyDetail companyDetail;
-    private UserDetail managementDetail;
+    private List<UserDetail> managementDetail;
     private List<ProjectRuleRelation> ruleRelationList = new ArrayList<ProjectRuleRelation>();
     private List<NotificationDetail> notificationList = new ArrayList<NotificationDetail>();
     private List<FileToReturnRequestDetail> fileToReturnRequestList = new ArrayList<FileToReturnRequestDetail>();
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     public Integer getProjectId() {
         return projectId;
@@ -94,13 +96,17 @@ public class ProjectDetail implements Serializable {
         this.companyDetail = companyDetail;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "management_id")
-    public UserDetail getManagementDetail() {
+    @ManyToMany
+    @JoinTable(
+        name = "employee_project_detail",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "management_id")
+    )
+    public List<UserDetail> getManagementDetail() {
         return managementDetail;
     }
 
-    public void setManagementDetail(UserDetail managementDetail) {
+    public void setManagementDetail(List<UserDetail> managementDetail) {
         this.managementDetail = managementDetail;
     }
 

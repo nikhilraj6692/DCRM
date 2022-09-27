@@ -1,0 +1,7 @@
+
+a
+java:S16127"KReplace this lambda with method reference 'GrantedAuthority::getAuthority'.(Ω§ô√
+E
+java:S2201C"/The return value of "orElseThrow" must be used.(ã‡é§
+Z
+java:S1612C"DReplace this lambda with method reference 'ForbiddenException::new'.(ã‡é§

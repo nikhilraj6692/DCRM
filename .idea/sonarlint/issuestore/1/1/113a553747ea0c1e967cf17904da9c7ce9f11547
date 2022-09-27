@@ -1,0 +1,12 @@
+
+E
+java:S3740"/Provide the parametrized type for this generic.(áÅğ¬
+E
+java:S3740*"/Provide the parametrized type for this generic.(´ÛÙ™
+C
+java:S1874"-Remove this use of "Query"; it is deprecated.(áÅğ¬
+C
+java:S1874*"-Remove this use of "Query"; it is deprecated.(´ÛÙ™
+W
+java:S1874+"<Remove this use of "setResultTransformer"; it is deprecated.(â¹Éûùÿÿÿÿ
+e	java:S117!"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(çÍËB

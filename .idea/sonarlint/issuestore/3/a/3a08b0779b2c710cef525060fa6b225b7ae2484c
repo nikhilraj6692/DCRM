@@ -1,0 +1,16 @@
+
+R
+java:S1172"0Remove this unused method parameter "companyId".(î½¹£ûÿÿÿÿ8ã©Í ·0
+^
+java:S3457""AFormat specifiers should be used instead of string concatenation.(‡¡Ìš8ã©Í ·0
+^
+java:S34573"AFormat specifiers should be used instead of string concatenation.(‡¡Ìš8ã©Í ·0
+^
+java:S3457D"AFormat specifiers should be used instead of string concatenation.(‡¡Ìš8ã©Í ·0
+c	java:S899M"BDo something with the "boolean" value returned by "createNewFile".(¬³ñÿûÿÿÿÿ8ò©Í ·0
+^
+java:S3457h"AFormat specifiers should be used instead of string concatenation.(ôè±â8ó©Í ·0
+w
+java:S1192""ZDefine a constant instead of duplicating this literal "Error while upload image " 3 times.(‡¡Ìš8ó©Í ·0
+k
+java:S2095N"NUse try-with-resources or close this "FileOutputStream" in a "finally" clause.(Âî¢·8¥ªÍ ·0
