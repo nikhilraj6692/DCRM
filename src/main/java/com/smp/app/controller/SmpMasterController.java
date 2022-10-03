@@ -195,8 +195,8 @@ public class SmpMasterController {
 
     @RequestMapping(value = "/getProjectAndReviewerList/{projectId}", method = RequestMethod.GET, produces =
         MediaType.APPLICATION_JSON_VALUE)
-    public ProjectReviewerResponseTO getProjectAndReviewerList(@PathVariable Integer projectId) {
-        return this.smpService.getProjectAndReviewerList(projectId);
+    public BaseResponse getProjectAndReviewerList(@PathVariable Integer projectId) {
+        return new BaseResponse(this.smpService.getProjectAndReviewerList(projectId), new BasicResponseTO(SMPAppConstants.REVIEWERS_RETRIEVED_SUCCESSFULLY));
     }
 
     @RequestMapping(value = "/saveProjectReviewerRelation", method = RequestMethod.PUT, produces =

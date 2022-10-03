@@ -21,12 +21,13 @@ user:
         - User.SignIn_WRITE
         - User.LogOut_WRITE
         - User.SilentRenewal_WRITE
-    - roleName: Reviewer
+    - roleName: Reviever
       allowedCapabilities:
         - User.SignIn_WRITE
         - User.LogOut_WRITE
         - User.SilentRenewal_WRITE
-    - roleName: Lead Reviewer
+        - Reviewer.Projects_READ
+    - roleName: Lead Reviever
       allowedCapabilities:
         - User.SignIn_WRITE
         - User.LogOut_WRITE

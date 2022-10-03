@@ -1,5 +1,6 @@
 package com.smp.app.controller;
 
+import com.smp.app.pojo.BaseResponse;
 import com.smp.app.pojo.PreviewReviewerRemarkInputTO;
 import com.smp.app.pojo.ReviewerProjectListInputTO;
 import com.smp.app.pojo.ReviewerProjectRulesInputTO;
@@ -11,6 +12,7 @@ import com.smp.app.pojo.ReviewerProjectDetailResponseTO;
 import com.smp.app.pojo.ReviewerProjectListResponseTO;
 import com.smp.app.pojo.SaveReviewerResponseTO;
 import com.smp.app.service.ReviewerService;
+import com.smp.app.util.SMPAppConstants;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,8 +34,8 @@ public class ReviewerController {
 
     @RequestMapping(value = "/getReviewerProjectList", method = RequestMethod.POST, consumes =
 		MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ReviewerProjectListResponseTO> getReviewerProjectList(@RequestBody ReviewerProjectListInputTO userInput) {
-        return this.reviewerService.getReviewerProjectList(userInput);
+    public BaseResponse getReviewerProjectList(@RequestBody ReviewerProjectListInputTO userInput) {
+        return new BaseResponse(this.reviewerService.getReviewerProjectList(userInput), new BasicResponseTO(SMPAppConstants.PROJECTS_RETRIEVED_SUCCESSFULLY));
     }
 
     @RequestMapping(value = "/getReviewerProjectRules", method = RequestMethod.POST, consumes =

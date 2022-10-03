@@ -42,3 +42,6 @@ api:
     "[/SMPMasterAction/saveProjectReviewerRelation]":
       method: PUT
       capabilityId: User.ProjectReviewer_UPDATE
+    "[/reviewerAction/getReviewerProjectList]":
+      method: POST
+      capabilityId: Reviewer.Projects_READ

@@ -65,10 +65,11 @@ public class ProjectDaoImpl extends GenericDaoImpl<ProjectDetail, Integer> imple
             + "DATE_FORMAT(projectDetail.createdDate, '%b %d, %Y') as projectCreatedDate, '" + projectImgBaseUrl
             + "' as projectImgBaseUrl " + "from ProjectDetail as projectDetail "
             + "inner join projectDetail.companyDetail as companyDetail "
+            + "inner join projectDetail.employeeDetail as employeeDetail "
             + "where projectDetail.projectStatus >=:projectStatus ";
 
         if (userInput.getUserRuleType() == UserRuleEnum.REVIEWER.getId()) {
-            hql = hql + " AND projectDetail.reviewerId =:reviewerId ";
+            hql = hql + " AND employeeDetail.id =:reviewerId ";
         }
 
         Query query = session.createQuery(hql);

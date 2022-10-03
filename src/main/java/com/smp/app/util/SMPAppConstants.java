@@ -1,5 +1,7 @@
 package com.smp.app.util;
 
+import com.smp.app.pojo.BasicResponseTO;
+
 public class SMPAppConstants {
 
     public static final String SERVICE_SUCCESS_STATUS = "service.success.status";
@@ -100,4 +102,6 @@ public class SMPAppConstants {
     public static final String INVALID_REVIEWER_ID = "SMP035";
     public static final String REVIEWER_UPDATED_SUCCESSFULLY = "SMP036";
     public static final String USERS_RETRIEVED_SUCCESSFULLY = "SMP037";
+    public static final String REVIEWERS_RETRIEVED_SUCCESSFULLY = "SMP038";
+    public static final String PROJECTS_RETRIEVED_SUCCESSFULLY = "SMP039";
 }
