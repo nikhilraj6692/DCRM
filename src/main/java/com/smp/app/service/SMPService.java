@@ -22,8 +22,10 @@ import com.smp.app.pojo.ProjectListResponseTO;
 import com.smp.app.pojo.ProjectReviewerResponseTO;
 import com.smp.app.pojo.RuleListResponseTO;
 import com.smp.app.entity.ProjectDetail;
+import com.smp.app.pojo.UserDetailResponseTO;
 import com.smp.app.pojo.UserLoginInputTO;
 import com.smp.app.util.ProjectStatusEnum;
+import com.smp.app.util.UserRuleEnum;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +51,7 @@ public interface SMPService {
 
     List<BookListResponseTO> getBookList();
 
-    ProjectReviewerResponseTO getProjectAndReviewerList();
+    ProjectReviewerResponseTO getProjectAndReviewerList(Integer projectId);
 
     BasicResponseTO saveProjectReviewerRelation(ProjectReviewerRelationInputTO reviewerRelationInput);
 
@@ -91,4 +93,6 @@ public interface SMPService {
     void logOut(HttpServletRequest request, HttpServletResponse response);
 
     TokenResponse renewToken(TokenRequest tokenRequest);
+
+    List<UserDetailResponseTO> getUsersList(UserRuleEnum userRuleEnum);
 }

@@ -43,7 +43,7 @@ public class ProvisionBookDaoImpl extends GenericDaoImpl<ProvisionBookDetail, In
             + "from ProjectRuleRelation as projRuleRelation " + "inner join projRuleRelation.projectDetail as projectDetail "
             + "inner join  projRuleRelation.projectRuleDetail as ruleDetail "
             + "inner join ruleDetail.provisionBookDetail as bookDetail   "
-            + "where projectDetail.managementDetail.userId =:managementId " + "order by bookDetail.bookName asc ";
+            + "where projectDetail.employeeDetail.userId =:managementId " + "order by bookDetail.bookName asc ";
         Query query = session.createQuery(hql);
         query.setParameter("managementId", managementId);
         List<Object[]> resultList = query.list();

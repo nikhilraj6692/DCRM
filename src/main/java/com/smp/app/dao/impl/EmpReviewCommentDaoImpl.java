@@ -28,10 +28,10 @@ public class EmpReviewCommentDaoImpl extends GenericDaoImpl<UserReviewComments, 
         Session session = this.getSession();
         String nativeSql = "";
         if (notificationTypeId == UserRuleEnum.MANAGEMENT.getId()) {
-            nativeSql = "SELECT empDetail.id, empDetail.device_token_value " + "FROM employee_detail  as empDetail "
+            /*nativeSql = "SELECT empDetail.id, empDetail.device_token_value " + "FROM employee_detail  as empDetail "
                 + "where (empDetail.user_rule_id = " + UserRuleEnum.LEAD_REVIEWER.getId() + " OR empDetail.id = "
                 + projectDetail.getReviewerId() + ") AND empDetail.device_token_value IS not null "
-                + " AND device_token_value != ''";
+                + " AND device_token_value != ''";*/
         } else if (notificationTypeId == UserRuleEnum.REVIEWER.getId()) {
             nativeSql = "SELECT empDetail.id, empDetail.device_token_value " + "FROM employee_detail  as empDetail "
                 + "where empDetail.user_rule_id = " + UserRuleEnum.LEAD_REVIEWER.getId()

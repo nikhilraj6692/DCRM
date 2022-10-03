@@ -33,7 +33,6 @@ public interface ProjectDao extends GenericDao<ProjectDetail, Integer> {
 
     List<ConformityLevelResponseTO> getReviewerConformityLevel();
 
-    List<ProjectDetailReviewerRelation> getProjectListReviewerRelation();
 
     List<ManagementPreviewDetailsResponseTO> managementPreviewDetails(Integer projectId);
 
@@ -45,7 +44,7 @@ public interface ProjectDao extends GenericDao<ProjectDetail, Integer> {
 
     MangtWelComeResponseTO getMangtWelComeContent(Integer managementId);
 
-    List<ProjectListResponseTO> getProjectList();
+    List<ProjectListResponseTO> getProjectList(Integer projectId);
 
     List<ReviewerProjectListResponseTO> getManagementUserProjectList(ReviewerProjectListInputTO userInput,
         String projectImgBaseUrl);

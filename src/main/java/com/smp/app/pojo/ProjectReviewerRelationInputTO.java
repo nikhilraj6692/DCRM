@@ -1,9 +1,11 @@
 package com.smp.app.pojo;
 
+import java.util.List;
+
 public class ProjectReviewerRelationInputTO {
 
     private Integer projectId;
-    private Integer reviewerId;
+    private List<Integer> reviewerIds;
 
 
     public Integer getProjectId() {
@@ -14,12 +16,11 @@ public class ProjectReviewerRelationInputTO {
         this.projectId = projectId;
     }
 
-    public Integer getReviewerId() {
-        return reviewerId;
+    public List<Integer> getReviewerIds() {
+        return reviewerIds;
     }
 
-    public void setReviewerId(Integer reviewerId) {
-        this.reviewerId = reviewerId;
+    public void setReviewerIds(List<Integer> reviewerIds) {
+        this.reviewerIds = reviewerIds;
     }
-
 }

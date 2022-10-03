@@ -1,6 +1,7 @@
 package com.smp.app.dao.impl;
 
 import com.smp.app.dao.UserDetailDao;
+import com.smp.app.pojo.UserDetailResponseTO;
 import com.smp.app.pojo.UserLoginInputTO;
 import com.smp.app.pojo.UserDetailReviewerRelation;
 import com.smp.app.util.UserRuleEnum;
@@ -68,12 +69,40 @@ public class UserDetailDaoImpl extends GenericDaoImpl<UserDetail, Integer> imple
         Session session = this.getSession();
         UserDetail resultObj = null;
         String hql = "select userDetail.userId as userId, userDetail.userName as userName, "
-            + "userDetail.userEmailId as userEmailId " + "from UserDetail as userDetail "
+            + "userDetail.userEmailId as userEmailId, userDetail.projectList as projectList " + "from UserDetail as userDetail "
             + "where userDetail.userRule.ruleId =:userRuleId";
         Query query = session.createQuery(hql).setParameter("userRuleId", 2)
             .setResultTransformer(Transformers.aliasToBean(UserDetailReviewerRelation.class));
         List<UserDetailReviewerRelation> resultList = query.list();
         return resultList;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
+    public UserDetail getUserOnBasisOfRole(Integer userRuleId, Integer userId) {
+        Session session = this.getSession();
+        UserDetail resultObj = null;
+        String hql = "from UserDetail as userDetail " + "where userDetail.id =:userId and userDetail.userRule.ruleId =:userRuleId";
+        Query query = session.createQuery(hql).setParameter("userId", userId).setParameter("userRuleId", userRuleId);
+
+        List<UserDetail> resultList = query.list();
+        if (resultList != null && resultList.size() > 0) {
+            resultObj = resultList.get(0);
+        }
+        return resultObj;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
+    public List<UserDetail> getUserOnBasisOfRole(Integer userRuleId) {
+        Session session = this.getSession();
+        String hql = "from UserDetail as userDetail " +
+            (null!=userRuleId?"where userDetail.userRule.ruleId =:userRuleId":"");
+        Query query = session.createQuery(hql);
+        if(null!=userRuleId){
+            query.setParameter("userRuleId", userRuleId);
+        }
+        return query.list();
     }
 
     @Override
@@ -90,6 +119,19 @@ public class UserDetailDaoImpl extends GenericDaoImpl<UserDetail, Integer> imple
             resultObj = resultList.get(0);
         }
         return resultObj;
+    }
+
+    @Override
+    public List<UserDetailResponseTO> getUsersWithAssignedProjectId(Integer userRuleId, Integer projectId) {
+        Session session = this.getSession();
+        String hql = "select userDetail.userId as userId, userDetail.userName as username from UserDetail as userDetail inner join userDetail.projectList as projectList where projectList.id=:projectId " +
+            (null!=userRuleId?"and userDetail.userRule.ruleId =:userRuleId":"");
+        Query query = session.createQuery(hql).setParameter("projectId", projectId);
+        if(null!=userRuleId){
+            query.setParameter("userRuleId", userRuleId);
+        }
+        query.setResultTransformer(Transformers.aliasToBean(UserDetailResponseTO.class));
+        return query.list();
     }
 
 }

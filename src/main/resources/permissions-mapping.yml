@@ -33,3 +33,12 @@ api:
     "[/SMPMasterAction/updateProjectRuleDetail]":
       method: PUT
       capabilityId: User.ProjectRule_UPDATE
+    "[/SMPMasterAction/getUsersList]":
+      method: GET
+      capabilityId: User.ListUsers_READ
+    "[/SMPMasterAction/getProjectAndReviewerList/.*]":
+      method: GET
+      capabilityId: User.ProjectReviewer_READ
+    "[/SMPMasterAction/saveProjectReviewerRelation]":
+      method: PUT
+      capabilityId: User.ProjectReviewer_UPDATE

@@ -13,6 +13,9 @@ user:
         - User.Projects_READ
         - User.NewBookList_READ
         - User.ProjectRule_UPDATE
+        - User.ListUsers_READ
+        - User.ProjectReviewer_READ
+        - User.ProjectReviewer_UPDATE
     - roleName: Management
       allowedCapabilities:
         - User.SignIn_WRITE

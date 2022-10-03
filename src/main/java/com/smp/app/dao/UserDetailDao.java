@@ -1,5 +1,6 @@
 package com.smp.app.dao;
 
+import com.smp.app.pojo.UserDetailResponseTO;
 import com.smp.app.pojo.UserLoginInputTO;
 import com.smp.app.pojo.UserDetailReviewerRelation;
 import com.smp.app.entity.UserDetail;
@@ -13,5 +14,11 @@ public interface UserDetailDao extends GenericDao<UserDetail, Integer> {
 
     List<UserDetailReviewerRelation> getUserListReviewerRelation();
 
+    UserDetail getUserOnBasisOfRole(Integer userRuleId, Integer userId);
+
+    List<UserDetail> getUserOnBasisOfRole(Integer userRuleId);
+
     UserDetail findByRefreshToken(String refreshToken);
+
+    List<UserDetailResponseTO> getUsersWithAssignedProjectId(Integer ruleId, Integer projectId);
 }

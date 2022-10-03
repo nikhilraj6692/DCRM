@@ -97,4 +97,7 @@ public class SMPAppConstants {
     public static final String INVALID_PROJECT_ID = "SMP033";
     public static final String PROJECT_UPDATED_SUCCESSFULLY = "SMP034";
 
+    public static final String INVALID_REVIEWER_ID = "SMP035";
+    public static final String REVIEWER_UPDATED_SUCCESSFULLY = "SMP036";
+    public static final String USERS_RETRIEVED_SUCCESSFULLY = "SMP037";
 }

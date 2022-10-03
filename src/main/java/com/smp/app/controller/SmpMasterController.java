@@ -38,12 +38,14 @@ import com.smp.app.util.ImageUpload;
 import com.smp.app.util.PDFGenerator;
 import com.smp.app.util.ProjectStatusEnum;
 import com.smp.app.util.SMPAppConstants;
+import com.smp.app.util.UserRuleEnum;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -186,13 +188,18 @@ public class SmpMasterController {
         return this.smpService.updateProjectRuleDetail(updateProjInput);
     }
 
-    @RequestMapping(value = "/getProjectAndReviewerList", method = RequestMethod.GET, produces =
-        MediaType.APPLICATION_JSON_VALUE)
-    public ProjectReviewerResponseTO getProjectAndReviewerList() {
-        return this.smpService.getProjectAndReviewerList();
+    @RequestMapping(value = "/getUsersList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse getUsersList(@RequestParam(name = "ruleId", required = false) UserRuleEnum userRuleEnum){
+        return new BaseResponse(this.smpService.getUsersList(userRuleEnum), new BasicResponseTO(SMPAppConstants.USERS_RETRIEVED_SUCCESSFULLY));
     }
 
-    @RequestMapping(value = "/saveProjectReviewerRelation", method = RequestMethod.POST, produces =
+    @RequestMapping(value = "/getProjectAndReviewerList/{projectId}", method = RequestMethod.GET, produces =
+        MediaType.APPLICATION_JSON_VALUE)
+    public ProjectReviewerResponseTO getProjectAndReviewerList(@PathVariable Integer projectId) {
+        return this.smpService.getProjectAndReviewerList(projectId);
+    }
+
+    @RequestMapping(value = "/saveProjectReviewerRelation", method = RequestMethod.PUT, produces =
         MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public BasicResponseTO saveProjectReviewerRelation(@RequestBody ProjectReviewerRelationInputTO reviewerRelationInput) {
         return this.smpService.saveProjectReviewerRelation(reviewerRelationInput);

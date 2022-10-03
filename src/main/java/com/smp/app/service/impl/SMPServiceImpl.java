@@ -70,6 +70,7 @@ import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -79,6 +80,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Hibernate;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -206,6 +208,25 @@ public class SMPServiceImpl implements SMPService {
     }
 
     @Override
+    public List<UserDetailResponseTO> getUsersList(UserRuleEnum userRuleEnum) {
+        Integer id = null;
+        if (null != userRuleEnum) {
+            id = userRuleEnum.getId();
+        }
+        List<UserDetail> userDetails =  userDetailDao.getUserOnBasisOfRole(id);
+        if(CollectionUtils.isNotEmpty(userDetails)){
+            return userDetails.stream().map(userDetail->{
+                UserDetailResponseTO userDetailResponseTO = new UserDetailResponseTO();
+                userDetailResponseTO.setUserId(userDetail.getUserId());
+                userDetailResponseTO.setUsername(userDetail.getUserName());
+                return userDetailResponseTO;
+            }).collect(Collectors.toList());
+        }
+
+        return Arrays.asList();
+    }
+
+    @Override
     //@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT)
     public JSONObject saveRuleDetail(SaveRuleInputTO ruleInputTO) {
         ProjectRuleDetail ruleDetail = new ProjectRuleDetail();
@@ -318,7 +339,7 @@ public class SMPServiceImpl implements SMPService {
             userDetails.add(userDetail);
         }
 
-        projectDetail.setManagementDetail(userDetails);
+        projectDetail.setEmployeeDetail(userDetails);
         this.companyDao.saveOrUpdate(companyDetail);
 
         List<Integer> selectedRuleIds = projectInfo.getSelectedRuleIds();
@@ -460,34 +481,37 @@ public class SMPServiceImpl implements SMPService {
 
 
     @Override
-    public ProjectReviewerResponseTO getProjectAndReviewerList() {
-        ProjectReviewerResponseTO responseTO = new ProjectReviewerResponseTO();
-        responseTO.setProjectList(this.projectDao.getProjectListReviewerRelation());
-        if (responseTO.getProjectList().size() != 0) {
-            responseTO.setReviewerList(this.userDetailDao.getUserListReviewerRelation());
-        }
-        return responseTO;
+    public ProjectReviewerResponseTO getProjectAndReviewerList(Integer projectId) {
+        List<UserDetailResponseTO> users = userDetailDao.getUsersWithAssignedProjectId(2, projectId);
+
+        ProjectReviewerResponseTO projectReviewerResponseTO = new ProjectReviewerResponseTO();
+        projectReviewerResponseTO.setProjectId(projectId);
+        projectReviewerResponseTO.setReviewers(
+            null != users ? users.stream().map(UserDetailResponseTO::getUserId).collect(Collectors.toList()) : Arrays.asList());
+        return projectReviewerResponseTO;
     }
 
 
     @Override
     public BasicResponseTO saveProjectReviewerRelation(ProjectReviewerRelationInputTO reviewerRelationInput) {
-        BasicResponseTO basicResponseTO = new BasicResponseTO();
-        try {
-            ProjectDetail projectDetail = projectDao.read(reviewerRelationInput.getProjectId());
-            projectDetail.setReviewerId(reviewerRelationInput.getReviewerId());
-            this.projectDao.saveOrUpdate(projectDetail);
-            basicResponseTO.setResponseStatus(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_SUCCESS_STATUS)));
-            basicResponseTO.setResponseMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.SAVE_PROJECT_REVIEWER_RELATION_SUCCESS_MSG));
-        } catch (Exception e) {
-            basicResponseTO.setResponseStatus(
-                Boolean.parseBoolean(this.commonUtils.readUserDefinedMessages(SMPAppConstants.SERVICE_FAILURE_STATUS)));
-            basicResponseTO.setResponseMessage(
-                this.commonUtils.readUserDefinedMessages(SMPAppConstants.SAVE_PROJECT_REVIEWER_RELATION_FAILURE_MSG));
+        ProjectDetail projectDetail = projectDao.read(reviewerRelationInput.getProjectId());
+        if (null == projectDetail) {
+            throw new InvalidInputException(SMPAppConstants.INVALID_PROJECT_ID);
         }
-        return basicResponseTO;
+
+        List<UserDetail> userDetails = new ArrayList<>();
+        for (Integer reviewerId : reviewerRelationInput.getReviewerIds()) {
+            UserDetail userDetail = userDetailDao.getUserOnBasisOfRole(2, reviewerId);
+            if (null == userDetail) {
+                throw new InvalidInputException(SMPAppConstants.INVALID_REVIEWER_ID);
+            }
+            userDetails.add(userDetail);
+        }
+
+        projectDetail.setEmployeeDetail(userDetails);
+        this.projectDao.saveOrUpdate(projectDetail);
+
+        return new BasicResponseTO(SMPAppConstants.REVIEWER_UPDATED_SUCCESSFULLY);
     }
 
 
@@ -615,7 +639,7 @@ public class SMPServiceImpl implements SMPService {
     public BasicResponseTO updateProjectRuleDetail(UpdateProjectRuleInputTO updateProjInput) {
         ProjectDetail projectDetail = this.projectDao.read(updateProjInput.getProjectId());
 
-        if(null == projectDetail){
+        if (null == projectDetail) {
             throw new InvalidInputException(SMPAppConstants.INVALID_PROJECT_ID);
         }
 
@@ -624,7 +648,7 @@ public class SMPServiceImpl implements SMPService {
             projectRuleRelation.setProjectDetail(projectDetail);
             ProjectRuleDetail projectRuleDetail = this.projectRuleDao.read(ruleId);
 
-            if(null == projectRuleDetail){
+            if (null == projectRuleDetail) {
                 throw new InvalidInputException(SMPAppConstants.INVALID_RULE_ID);
             }
             projectRuleRelation.setProjectRuleDetail(projectRuleDetail);

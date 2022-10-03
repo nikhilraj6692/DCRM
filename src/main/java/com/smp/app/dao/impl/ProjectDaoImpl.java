@@ -232,17 +232,6 @@ public class ProjectDaoImpl extends GenericDaoImpl<ProjectDetail, Integer> imple
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
-    public List<ProjectDetailReviewerRelation> getProjectListReviewerRelation() {
-        Session session = this.getSession();
-        String nativeSql = "select projectDetail.projectId as projectId, " + "projectDetail.projectName as projectName "
-            + "from ProjectDetail as projectDetail " + "where projectDetail.reviewerId IS NULL";
-        Query query = session.createQuery(nativeSql)
-            .setResultTransformer(Transformers.aliasToBean(ProjectDetailReviewerRelation.class));
-        return query.list();
-    }
-
-    @Override
-    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
     public List<ManagementPreviewDetailsResponseTO> managementPreviewDetails(Integer projectId) {
         Session session = this.getSession();
         String nativeSql = "Select projectDetail.id as projectId, " + "projectDetail.project_name as projectName, "
@@ -394,8 +383,8 @@ public class ProjectDaoImpl extends GenericDaoImpl<ProjectDetail, Integer> imple
             + " projectDetail.projectId as projectId, " + "projectDetail.projectName as projectName, "
             + "projectDetail.projectLogo as projectLogoPath " + "from ProjectDetail as projectDetail "
             + "inner join projectDetail.companyDetail as companyDetail "
-            + "inner join projectDetail.managementDetail as managementDetail "
-            + "where projectDetail.managementDetail.userId =:userId";
+            + "inner join projectDetail.employeeDetail as managementDetail "
+            + "where projectDetail.employeeDetail.userId =:userId";
         Query query = session.createQuery(nativeSql).setParameter("userId", managementId)
             .setResultTransformer(Transformers.aliasToBean(MangtWelComeResponseTO.class));
         List<MangtWelComeResponseTO> resultList = query.list();
@@ -407,13 +396,20 @@ public class ProjectDaoImpl extends GenericDaoImpl<ProjectDetail, Integer> imple
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = true)
-    public List<ProjectListResponseTO> getProjectList() {
+    public List<ProjectListResponseTO> getProjectList(Integer projectId) {
         Session session = this.getSession();
         String hqlSql = "select projectDetail.projectId as projectId, " + "projectDetail.projectName as projectName "
             + "from ProjectDetail as projectDetail ";
 
-        Query query = session.createQuery(hqlSql)
-            .setResultTransformer(Transformers.aliasToBean(ProjectListResponseTO.class));
+        if(null!=projectId){
+            hqlSql+="where projectDetail.projectId=:projectId";
+        }
+
+        Query query = session.createQuery(hqlSql);
+        if(null!=projectId){
+            query.setParameter("projectId", projectId);
+        }
+        query.setResultTransformer(Transformers.aliasToBean(ProjectListResponseTO.class));
         return query.list();
     }
 
@@ -429,7 +425,7 @@ public class ProjectDaoImpl extends GenericDaoImpl<ProjectDetail, Integer> imple
             + "DATE_FORMAT(projectDetail.createdDate, '%b %d, %Y') as projectCreatedDate, '" + projectImgBaseUrl
             + "' as projectImgBaseUrl " + "from ProjectDetail as projectDetail "
             + "inner join projectDetail.companyDetail as companyDetail "
-            + "where projectDetail.projectStatus >=:projectStatus AND projectDetail.managementDetail.userId =:userId";
+            + "where projectDetail.projectStatus >=:projectStatus AND projectDetail.employeeDetail.userId =:userId";
 
         Query query = session.createQuery(hql);
         query.setParameter("projectStatus", ProjectStatusEnum.OPEN.getId());
@@ -445,7 +441,7 @@ public class ProjectDaoImpl extends GenericDaoImpl<ProjectDetail, Integer> imple
     public String getManagementUserEmailBasedOnProjectId(Integer projectId) {
         Session session = this.getSession();
         String hql = "select managementUser.userEmailId " + "from ProjectDetail as projectDetail "
-            + "inner join projectDetail.managementDetail as managementUser " + "where projectDetail.projectId =:projectId";
+            + "inner join projectDetail.employeeDetail as managementUser " + "where projectDetail.projectId =:projectId";
 
         Query query = session.createQuery(hql);
         query.setParameter("projectId", projectId);

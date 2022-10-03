@@ -29,11 +29,10 @@ public class ProjectDetail implements Serializable {
     private Integer projectStatus;
     private String projectLogo;
     private Date createdDate;
-    private Integer reviewerId;
     private Integer versionNum;
     private Date projectSubmittedDate;
     private CompanyDetail companyDetail;
-    private List<UserDetail> managementDetail;
+    private List<UserDetail> employeeDetail;
     private List<ProjectRuleRelation> ruleRelationList = new ArrayList<ProjectRuleRelation>();
     private List<NotificationDetail> notificationList = new ArrayList<NotificationDetail>();
     private List<FileToReturnRequestDetail> fileToReturnRequestList = new ArrayList<FileToReturnRequestDetail>();
@@ -100,14 +99,14 @@ public class ProjectDetail implements Serializable {
     @JoinTable(
         name = "employee_project_detail",
         joinColumns = @JoinColumn(name = "project_id"),
-        inverseJoinColumns = @JoinColumn(name = "management_id")
+        inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    public List<UserDetail> getManagementDetail() {
-        return managementDetail;
+    public List<UserDetail> getEmployeeDetail() {
+        return employeeDetail;
     }
 
-    public void setManagementDetail(List<UserDetail> managementDetail) {
-        this.managementDetail = managementDetail;
+    public void setEmployeeDetail(List<UserDetail> managementDetail) {
+        this.employeeDetail = managementDetail;
     }
 
     @OneToMany(mappedBy = "projectDetail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -135,15 +134,6 @@ public class ProjectDetail implements Serializable {
 
     public void setProjectLogo(String projectLogo) {
         this.projectLogo = projectLogo;
-    }
-
-    @Column(name = "reviewer_id")
-    public Integer getReviewerId() {
-        return reviewerId;
-    }
-
-    public void setReviewerId(Integer reviewerId) {
-        this.reviewerId = reviewerId;
     }
 
     @OneToMany(mappedBy = "projectDetail", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
